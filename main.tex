@@ -215,7 +215,7 @@ analogová a číslicová filtrace, časová, spektrální nebo časově-frekven
 
 \subsection{Číslicová filtrace signálu} \label{sec:filtry)}
 Filtrace signálu je proces zprostředkovávaný systémem, číslicovým filtrem, při němž dochází ke změně frekvenčního spektra vstupního signálu za účelem zvýraznění, resp. potlačení některých jeho složek. \cite{filtracedef}
-Číslicový filtr charakterizují tři základní vlastnosti - impulzní, přenosová a frekvenční charakteristika, které poskytují kompletní představu o chování filtru. Impulzní charakteristika udává chování filtru vyjádřené jeho odezvou na jednotkový puls. Na jejím základě lze filtry rozdělit na ty s konečnou  impulzní odezvou (nebo-li FIR, z angl. \textit{finite impulse response}), jejichž impluzní odezva má konečný počet nenulových hodnot, a na ty s nekonečnou impulzní odezvou (nebo-li IIR, z angl. \textit{infinite impulse response}), u nichž je počet nenulových hodnot impulzní odezvy nekonečný. Hlavní předností FIR filtrů je jejich stabilita a také poměrně snadný matematický popis, na druhou stranu jejich chování je poměrně vzdálené od chování ideálních filtrů (obr. č. \ref{fig:filtryfrekvs}). Pro IIR filtry je naopak typické  \ldots .
+Číslicový filtr charakterizují tři základní vlastnosti - impulzní, přenosová a frekvenční charakteristika, které poskytují kompletní představu o chování filtru. Impulzní charakteristika udává chování filtru vyjádřené jeho odezvou na jednotkový puls. Na jejím základě lze filtry rozdělit na ty s konečnou  impulzní odezvou (nebo-li FIR, z angl. \textit{finite impulse response}), jejichž impulzní odezva má konečný počet nenulových hodnot, a na ty s nekonečnou impulzní odezvou (nebo-li IIR, z angl. \textit{infinite impulse response}), u nichž je počet nenulových hodnot impulzní odezvy nekonečný. Hlavní předností FIR filtrů je jejich stabilita a také poměrně snadný matematický popis, na druhou stranu jejich chování je poměrně vzdálené od chování ideálních filtrů (obr. č. \ref{fig:filtryfrekvs}). Pro IIR filtry je naopak typické  \ldots .
 \newline
 Převedením impulzní charakteristiky do frekvenční oblasti pomocí tzv. Z-transformace je možné získat přenosovou charakteristiku filtru.
 \begin{equation}
@@ -266,18 +266,15 @@ Frekvenční charakteristika je odvozena od impulzní charakteristiky pomocí di
 
 \subsubsection{Filtr s nulovým fázovým posunem}
 \label{sec:filtr1}
-dopředná + zpětná filtrace \underline{\textcolor{red}{? LTI ?}} systémem\\
-\ldots \\
-\noindent Prvním z číslicových filtrů využitých v rámci programu je filtr s nulovým fázovým posunem. K implementaci tohoto druhu filtrace jsou nejčastěji využívány filtry IIR typu, které jsou výpočetně méně náročné, zároveň \ldots
+Prvním z číslicových filtrů využitých v rámci programu je filtr s nulovým fázovým posunem. K implementaci tohoto druhu filtrace jsou využívány jak filtry FIR typu, tak IIR typu. Ty jsou výpočetně méně náročné, zároveň ale vykazují fázové zkreslení způsobené nelinearitou frekvenční charakteristiky filtru, kdy dochází k nestejnému zpožďování různých složek signálu. U FIR filtrů k tomuto jevu také dochází, zkreslení je však vlivem lineární frekvenční charakteristiky konstantní a nedochází proto k deformaci časové řady. Efekt fázového zkreslení lze částečně potlačit právě zero-phase filtrací. \textcolor{lavender}{V rámci programu byl použit filtr lineární (viz \ref{sec:exp_filtrace})}.
 
-
-Pro docílení nulového fázového posunu se provádí filtrace v dopředném a zpětném směru. To je možné provést dvěma způsoby, buď je nejprve signál filtrován, následně překlopen v čase, poté znova filtrován a nakonec opět překlopen v čase nebo jsou tyto operace provedeny v opačném pořadí, tj. nejprve překlopení signálu v čase a poté filtrace. Oba tyto postupy poskytují ekvivalentní výsledky, jedná se tedy pouze o formální odlišnost ve vnitřním fungování zero-phase systému. Schéma filtrace s nulovým fázovým posunem je znázorněno na obr. č. \ref{fig:zerophase}
-\begin{figure}
+Pro docílení nulového fázového posunu se provádí filtrace v dopředném a zpětném směru. To je možné provést dvěma způsoby, buď je nejprve signál filtrován, následně překlopen v čase, poté znova filtrován a nakonec opět překlopen v čase nebo jsou tyto operace provedeny v opačném pořadí, tj. nejprve překlopení signálu v čase a poté filtrace. Oba tyto postupy poskytují ekvivalentní výsledky, jedná se tedy pouze o formální odlišnost ve vnitřním fungování zero-phase systému. Schéma filtrace s nulovým fázovým posunem je znázorněno na obr. č. \ref{fig:zerophase}.
+\begin{figure}[hbt!]
   \centering
-  \includegraphics[width=\linewidth]{}
+  \includegraphics[width=\linewidth]{zero-phase_moje.png}
+  \caption{Princip filtrace s nulovým fázovým posunem}
+  \label{fig:zerophase}
 \end{figure}
-
-
 
 \subsubsection{Savitzky-Golay filtr}
 \label{sec:filtr2}
@@ -310,7 +307,7 @@ nahrazuje \(x^{stare^{´}}\) mediánem hodnot v okně
 \subsubsection{Záložky a funkce}
 \ldots .
 
-\subsection{Filtrace signálu}
+\subsection{Filtrace signálu}\label{sec:exp_filtrace}
 
 \subsection{Export dat}
 \ldots .
