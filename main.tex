@@ -44,6 +44,7 @@
 
 % grafika
 \usepackage{graphicx}
+\usepackage{wrapfig}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{color, soul}
@@ -71,7 +72,7 @@
 % souhrn
 % (CZ)
 \section*{Souhrn}
-Při reaktivní sintraci dochází působením tlaku a tepla ke spékání práškových kovů za vzniku jejich sloučenin. Pro zkoumání mechanismu a kinetiky tohoto děje se využívá snímání reakční směsi pomocí rentgenové difrakce $in$ $situ$. Z takto získaných dat lze zpětně vizuálním posouzením přibližně identifikovat  moment vzniku jednotlivých intermetalických sloučenin. Cílem této práce bylo vytvořit program s uživatelským rozhraním umožňující efektivnější analýzu krystalografických dat s důrazem na přesnost identifikace vznikajících fází. Vzniklý program je vybaven nástroji pro načítání dat ze souborů, jejich vizualizaci a zpracování signálu. Program rovněž umožňuje zpracovaná data zpětně exportovat do souborů. K tvorbě programu byl využit programovací jazyk Python.
+Při reaktivní sintraci dochází působením tlaku a tepla ke spékání práškových kovů za vzniku jejich sloučenin. Pro zkoumání mechanismu a kinetiky tohoto děje se využívá snímání reakční směsi pomocí rentgenové difrakce \textit{in situ}. Z takto získaných dat lze zpětně vizuálním posouzením přibližně identifikovat  moment vzniku jednotlivých intermetalických sloučenin. Cílem této práce bylo vytvořit program s uživatelským rozhraním umožňující efektivnější analýzu krystalografických dat s důrazem na přesnost identifikace vznikajících fází. Vzniklý program je vybaven nástroji pro načítání dat ze souborů, jejich vizualizaci a zpracování signálu. Program rovněž umožňuje zpracovaná data zpětně exportovat do souborů. K tvorbě programu byl využit programovací jazyk Python.
 
 % (EN)
 \section*{Summary}
@@ -82,6 +83,7 @@ During the reactive sintering, powdery metals are sintered at high temperatures 
 % poděkování
 \section*{Poděkování}
 případné poděkování. Pokud není, stranu vynechat.
+
 %%
 \newpage
 
@@ -92,14 +94,14 @@ případné poděkování. Pokud není, stranu vynechat.
 
 % úvod
 \section{Úvod}
-\textcolor{cdorange}{V oblasti výzkumu kovových materiálů jsou kladeny stále větší nároky na jejich vlastnosti. V této souvislosti je snaha získávat slitiny s vylepšenými vlastnostmi, které by vynikaly např. extrémní ohebností, odolností vůči korozi či vysokým teplotám. K tomu se v poslední době hojně využívá metoda práškového slinování kovů, nebo-li reaktivní sintrace, poskytující nejrůznější intermetalické sloučeniny. Při tomto ději však vznikají jak užitečné slitiny požadovaných vlastní, tak i méně kvalitní produkty. Pro maximální výtěžnost je proto nutné sledovat mechanismus vzniku jednotlivých sloučenin, a to např. metodou rentgenové difrakce (XRD) $in$ $situ$, která umožňuje detailně sledovat vývoj krystalické struktury reakční směsi v reálném čase. Výstupem XRD je závislost intenzity rentgenového paprsku na úhlu jeho ohybu po průchodu materiálem a čase. Problém nastává při zpracování takto naměřených dat. V současné době probíhá vyhodnocení dat a identifikace intermetalických fází zejména ručně na základě tabelovaných hodnot úhlů ohybu přisouzených jednotlivým sloučeninám.
-Se stejným problémem se potýká rovněž výzkumná skupina doc. Pavla Nováka, Csc. z Ústavu kovových materiálů a korozního inženýrství Vysoké
-školy chemicko-technologické v Praze při jejich práci na výzkumu týkajícím se systémů Ti-Al. Proto vznikl požadavek na vytvoření programu s grafickým uživatelským rozhraním, který by umožnil proces identifikace automatizovat.\ldots}
+V oblasti výzkumu kovových materiálů jsou kladeny stále větší nároky na jejich vlastnosti. V této souvislosti je snaha získávat slitiny s vylepšenými vlastnostmi, které by vynikaly např. extrémní ohebností, odolností vůči korozi či vysokým teplotám. K tomu se v poslední době hojně využívá metoda práškového slinování kovů, nebo-li reaktivní sintrace, poskytující nejrůznější intermetalické sloučeniny. Při tomto ději však vznikají jak užitečné slitiny požadovaných vlastností, tak i méně kvalitní produkty. Pro maximální výtěžnost je proto nutné sledovat mechanismus vzniku jednotlivých sloučenin, a to např. metodou rentgenové difrakce (XRD) \textit{in situ}, která umožňuje detailně pozorovat vývoj krystalické struktury reakční směsi v reálném čase. Výstupem XRD je závislost intenzity rentgenového paprsku na úhlu jeho ohybu po průchodu materiálem a na čase. Problém nastává při zpracování takto naměřených dat. V současné době probíhá vyhodnocení dat a identifikace intermetalických fází zejména ručně na základě tabelovaných hodnot úhlů ohybu přisouzených jednotlivým sloučeninám.
+
+S obdobným problémem se při své práci na výzkumu týkajícím se systémů Ti-Al potýká rovněž výzkumná skupina doc. Ing. Pavla Nováka, Ph.D. z Ústavu kovových materiálů a korozního inženýrství Vysoké školy chemicko-technologické v Praze. Vznikl proto požadavek na vytvoření programu s grafickým uživatelským rozhraním, který by proces identifikace urychlil a celkově automatizoval. Za tímto účelem byla navázána meziústavní spolupráce s Ústavem počítačové a řídící techniky téže instituce. Tvorba programu a uživatelského rozhraní pro zpracování krystalografických dat je předmětem této bakalářské práce. K implementaci byl využit programovací jazyk Python a jeho knihovny.
 %%
 \newpage
 % teoretická část
 \section{Python}
-V této kapitole bude představen programovací jazyk Python (\ref{sec:history})
+V této kapitole bude představen programovací jazyk Python (\ref{sec:history}) a možnosti implementace uživatelského rozhraní v něm (\ref{sec:GUI}).
 \subsection{Stručná historie Pythonu} \label{sec:history}
 V 80. letech minulého století pracovali vývojáři institutu Centrum voor Wiskunde en Informatica (CWI) v Nizozemsku na skriptovacím jazyku ABC.  Ten měl být určen uživatelům z řad veřejnosti bez širších programátorských znalostí. \cite{PythonHist:1} Přes snahu jeho tvůrců se toho ale nepodařilo dosáhnout. Z toho důvodu se Guido van Rossum rozhodl vytvořit nový, uživatelsky přívětivější jazyk, který by odstranil nedostatky jazyka ABC. První verze tohoto jazyka nazvaného Python byla vypuštěna v roce 1994. \cite{PythonHist:2}
 
@@ -107,22 +109,30 @@ V 80. letech minulého století pracovali vývojáři institutu Centrum voor Wis
 \noindent Od té doby prošel Python značným vývojem a dočkal se mnoha nových verzí, z nichž zatím poslední (verze 3.7.3) byla zveřejněna k 25. březnu letošního roku (2019). \cite{PythonVersion}
 
 \subsection{Specifika programování v Pythonu} \label{sec:specifika}
-Python je multimodální skriptovací jazyk umožňující programování v rámci jak objektově orientovaného, tak procedurálního paradigmatu. \cite{Python3Summerfield:1} \todoin[bordercolor=green!80, backgroundcolor=green!30]{Kam umístit citaci, když více částí odstavce pochází ze stejného zdroje?}
-\todo[bordercolor=lavender,backgroundcolor=lavender!40,linecolor=lavender]{statistika/\vspace{1cm}graf}
-\noindent Jedná se o velmi oblíbený programovací jazyk hned z několika z důvodů. Hlavním z nich je srozumitelnost produkovaného kódu a tudíž jeho snadná osvojitelnost i pro uživatele bez větších zkušeností s programováním. S tím souvisí široká uživatelská komunita, která je, vedle propracované dokumentace, důležitým nástrojem při řešení problémů.  Jedná se rovněž o multiplatformní jazyk, tj. programy v něm napsané lze bez větších problémů spustit prakticky v libovolném systému, ať už Windows nebo v systémech na bázi Unix (Linux, Mac OS X apod.). V neposlední řadě je značnou výhodou Pythonu jeho rozsáhlá standardní knihovna, která umožňuje celou řadu úkonů. Zároveň je ale pro specializované operace k dispozici velké množství doplňkových knihoven třetích stran.
+Python je multimodální skriptovací jazyk umožňující programování v rámci jak objektově orientovaného, tak procedurálního paradigmatu. \cite{Python3Summerfield:1}
+Jak vyplývá ze statistik dvou nezávislých ukazatelů popularity programovacích jazyků, TIOBE\footnote{TIOBE Programming Community index je ukazatel popularity programovacích jazyků na základě počtu aktivních uživatelů, zdrojem informací jsou výsledky vyhledávání klíčových slov souvisejících s daným jazykem na nejrůznějších serverech, jako Google, Yahoo! nebo Wikipedia. \cite{tiobe}} a PYPL\footnote{PYPL PopularitY of Programming Language Index je ukazatelem popularity programovacích jazyků vycházející z dat služby Google Trends, která shromažďuje a vyhodnocuje údaje o vyhledávání od společnosti Google. \cite{pypl}}, Python se řadí mezi dlouhodobě nejoblíbenější programovací jazyky (viz obr. č. \ref{fig:tiobe} \cite{tiobe}).
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\linewidth]{tiobe.png}
+    \caption{Dlouhodobá meziroční statistika oblíbenosti programovacích jazyků podle indexu TIOBE, převzato z \cite{tiobe}}
+    \label{fig:tiobe}
+\end{figure}
+
+Důvodů k jeho oblibě je hned z několik. Hlavním z nich je srozumitelnost produkovaného kódu a tudíž jeho snadná osvojitelnost i pro uživatele bez větších zkušeností s programováním. S tím souvisí široká uživatelská komunita, která je, vedle propracované dokumentace, důležitým nástrojem při řešení problémů.  Jedná se rovněž o multiplatformní jazyk, tj. programy v něm napsané lze bez větších problémů spustit prakticky v libovolném operačním systému, ať už Windows nebo v systémech na bázi Unix (Linux, Mac OS X apod.). V neposlední řadě je značnou výhodou Pythonu jeho rozsáhlá standardní knihovna, která umožňuje celou řadu úkonů. Zároveň je ale pro specializované operace k dispozici velké množství doplňkových knihoven třetích stran.
 
 
-\noindent Jak již bylo řečeno, Python je především objektově orientovaným jazykem. Podstatu objektově orientovaného přístupu tvoří tzv. objekty. Objekty jsou seskupení dat s určitými vlastnostmi a funkcionalitami pracující na principu černé skříňky, tj. vykonávají určité činnosti a komunikaci s okolím bez nutnosti znát jejich vnitřní podstatu. Nadřazeným prvkem objektu je datový typ, neboli třída. Ten sdružuje samotné objekty a také operace, které je možné s nimi provádět. Příkladem může být např. třída \texttt{int} a do ní náležící objekt, číslo \texttt{3}. Třída \texttt{int} tedy zaštiťuje celá čísla s přesností na několik desetinných míst (angl.\textit{ integers}), s nimiž je možné provádět matematické operace, seskupovat je do seznamů, apod. \todoin[bordercolor=lavender, backgroundcolor=lavender!40]{Pro mě: ještě jeden příklad, příp. celkově lepší formulace poslední věty.}
+\noindent Jak již bylo řečeno, Python je především objektově orientovaným jazykem. Podstatu objektově orientovaného přístupu tvoří tzv. objekty. Objekty jsou seskupení dat s určitými vlastnostmi a funkcionalitami pracující na principu černé skříňky, tj. vykonávají činnosti a komunikaci s okolím bez nutnosti znát jejich vnitřní podstatu. Nadřazeným prvkem objektu je datový typ, neboli třída. Ten sdružuje samotné objekty a také operace, které je možné s nimi provádět. Příkladem může být např. třída \texttt{int} a do ní náležící objekt, číslo \texttt{3}. Třída \texttt{int} tedy zaštiťuje celá čísla (v počítači ukládána s konečným počtem desetinných míst, z angl.\textit{integers}), s nimiž je možné provádět matematické operace (sčítání, dělení, násobení\ldots), zápis do matic apod.
 
 
-\noindent Výhoda použití objektově-orientovaného přístupu spočívá v tzv. dědičnosti, díky níž objekty náležící do určité podtřídy odvozené od třídy hlavní přebírají (dědí) její vlastnosti. Tím dochází k úspoře vyprodukovaného kódu, neboť tyto objekty z podtříd není nutné znovu specifikovat. Vzniklý kód je tak přehlednější a celkově úspornější. Toho lze využít např. při tvorbě uživatelských rozhraní, kdy jsou kladeny nároky především na velikost skriptu. \ldots
+Výhoda použití objektově-orientovaného přístupu spočívá v tzv. dědičnosti, díky níž objekty náležící do určité podtřídy odvozené od třídy hlavní přebírají (dědí) její vlastnosti. Tím dochází k úspoře vyprodukovaného kódu, neboť tyto objekty z podtříd není nutné znovu specifikovat. Vzniklý kód je tak přehlednější a celkově úspornější. Toho lze využít např. při tvorbě uživatelských rozhraní, kdy jsou kladeny nároky především na velikost skriptu.
 
 \subsection{Grafické uživatelské rozhraní} \label{sec:GUI}
-Grafické uživatelské rozhraní, zkráceně GUI (z angl. \textit{Graphical User Interface}), je nástroj, s jehož pomocí je realizována oboustranná interakce mezi programem a uživatelem. Směrem dovnitř přicházejí vstupy zadané uživatelem, na než následně reagují odpovídající výstupy programu. Vstupy jsou uživatelem vysílány pomocí interaktivních ovládacích prvků, tzv. \textcolor{cdorange}{widgetů}, např. ve formě tlačítek, posuvníků, rolovacích seznamů apod. Výstupy programu se pak mohou projevovat rovněž nejrůznější způsoby, ať už jako procesy na pozadí nebo přímo akcemi v rámci grafických oken programu. Vnitřní podstatu fungování GUI si pak lze představit jako jakousi \uv{nekonečnou} smyčku událostí, která je vyvolána spuštěním programu a vytvořením hlavního okna s jeho ovládacími prvky. Ta následně čeká na vstup zvenčí. Pakliže takový vstup nepřichází, setrvává ve vyčkávací pozici. Jakmile jej ale dostane, postupuje dle předepsaného algoritmu až na konec, poté se opět vrátí do vyčkávací pozice. Tento cyklus se opakuje do té doby, než uživatel vyšle signál k ukončení programu. Tento proces je schematicky znázorněn na obr. č. \ref{fig:Gui} (převzato z \cite{Python3Summerfield:2} a upraveno).
-
-\begin{figure}[hbt!]
+Grafické uživatelské rozhraní, zkráceně GUI (z angl. \textit{Graphical User Interface}), je nástroj, s jehož pomocí je realizována oboustranná interakce mezi programem a uživatelem. Směrem dovnitř přicházejí vstupy zadané uživatelem, na než následně reagují odpovídající výstupy programu. Vstupy jsou uživatelem vysílány pomocí interaktivních ovládacích prvků, např. ve formě tlačítek, posuvníků, rolovacích seznamů apod. Výstupy programu se pak mohou projevovat rovněž nejrůznější způsoby, ať už jako procesy na pozadí nebo přímo akcemi v rámci grafických oken programu. Vnitřní podstatu fungování GUI si pak lze představit jako jakousi \uv{nekonečnou} smyčku událostí, která je vyvolána spuštěním programu a vytvořením hlavního okna s jeho ovládacími prvky. Ta následně čeká na vstup zvenčí. Pakliže takový vstup nepřichází, setrvává ve vyčkávací pozici. Jakmile jej ale dostane, postupuje dle předepsaného algoritmu až na konec, poté se opět vrátí do vyčkávací pozice. Tento cyklus se opakuje do té doby, než uživatel vyšle signál k ukončení programu. Tento proces je schematicky znázorněn na obr. č. \ref{fig:Gui} (převzato z \cite{Python3Summerfield:2} a upraveno).
+\clearpage
+\begin{figure}[ht!]
     \centering
-    \includegraphics{gui_princip.png}\vspace{0.4cm}
+    \includegraphics[width=0.8\linewidth,height=14.5cm]{gui_princip.png}\vspace{0.25cm}
     \caption{Princip fungování programu vybaveného grafickým uživatelským rozhraním}
     \label{fig:Gui}
 \end{figure}
@@ -130,10 +140,10 @@ Grafické uživatelské rozhraní, zkráceně GUI (z angl. \textit{Graphical Use
 \subsubsection{Tvorba GUI v Pythonu}
  Realizaci grafického uživatelského rozhraní lze v Pythonu provést hned několika způsoby. K dispozici je celá řada tzv. frameworků, tedy souborů specializovaných balíčků a modulů pro tvorbu GUI. Tato práce se však zaměřuje pouze na dva z nich, a to na PyQt a tkinter, za účelem jejich porovnání. PyQt je framework, v němž byl vytvořen program, jenž je předmětem této práce. tkinter byl zvolen k porovnání z důvodu, že se jedná o obecně nejčastěji používaný modul pro tvorbu uživatelských rozhraní v jazyce Python.
 \subsubsection*{tkinter}
-Obliba tkinter pramení pravděpodobně z toho, že se jedná o vestavěný modul Pythonu, tj. je součástí jeho standardní instalace spolu s knihovnou GUI Tk. To představuje značnou výhodu zejména v případě, že uživatel má k dispozici pouze standardní instalaci Pythonu a nechce či nemůže instalovat knihovny třetích stran. \cite{Python3Summerfield:2} Zároveň je tkinter frameworkem s poměrně malými nároky na paměť a jednoduchou syntaxí. Je tak vhodný zejména pro začátečníky. S tím se ale také pojí jeho hlavní nevýhoda, kterou je omezená nabídka widgetů, kvůli níž programy v něm vyprodukované působí méně nativně. tkinter tak není sám o sobě vhodný k tvorbě složitějších aplikací a je proto žádoucí jej, pokud možno, kombinovat s dalšími knihovnami. Co se týče kvality kódu, tkinter ve srovnání s knihovnami třetích stran opět kulhá. Obecně programy používající k tvorbě GUI jiné knihovny než Tk poskytují při stejné nebo kratší délce kódu výrazně lepší výsledky. \cite{Python3Summerfield:2}  
+Obliba tkinter pramení pravděpodobně z toho, že se jedná o vestavěný modul Pythonu, tj. je součástí jeho standardní instalace spolu s knihovnou GUI Tk. To představuje značnou výhodu zejména v případě, že uživatel má k dispozici pouze standardní instalaci Pythonu a nechce či nemůže instalovat knihovny třetích stran. \cite{Python3Summerfield:2} Zároveň je tkinter frameworkem s poměrně malými nároky na paměť a jednoduchou syntaxí. Je tak vhodný zejména pro začátečníky. S tím se ale také pojí jeho hlavní nevýhoda, kterou je omezená nabídka widgetů, tedy ovládacích prvků (z angl. \textit{widget}), kvůli níž programy v něm vyprodukované nepůsobí nativně. tkinter tak není sám o sobě vhodný k tvorbě složitějších aplikací a je proto žádoucí jej, pokud možno, kombinovat s dalšími knihovnami. Co se týče kvality kódu, tkinter ve srovnání s knihovnami třetích stran opět kulhá. Obecně programy používající k tvorbě GUI jiné knihovny Pythonu než Tk poskytují při stejné nebo kratší délce kódu výrazně lepší výsledky. \cite{Python3Summerfield:2}  
 
 \subsubsection*{PyQt}
-PyQt je odnoží od multiplatformního frameworku Qt určenou speciálně pro Python. Qt je samo o sobě knihovnou jazyka C++, ale podobně jako pro Python existuje v mnoha modifikacích i pro mnoho dalších skriptovacích jazyků (Ruby - \texttt{QtRuby}, C\texttt{\#}, Pascal, Java, atd.). Výhodou Qt je přehledná a podrobná dokumentace (společná pro všechny odnože), snadná instalace, kterou je možné provádět přes příkaz \texttt{pip} v příkazovém řádku a také nízké nároky na paměť. Aplikace vytvořené v Qt, resp. PyQt jsou také nativní, tj. přizpůsobují svůj vzhled operačnímu systému, na kterém jsou spuštěny. PyQt rovněž nabízí možnost využití nástroje QtDesigner, což je vývojové prostředí umožňující \textcolor{cdorange}{klikáním} poskládat grafické rozhraní z nabídky jednotlivých ovládacích prvků (viz obr. \ref{fig:QtDesigner}). Z prostředí QtDesigneru je dále možné generovat kód vytvořeného GUI do Pythonu a do něj ručně vepsat funkcionality jednotlivých widgetů. Nevýhodou použití tohoto nástroje je ale množství a značná nepřehlednost generovaného kódu, neboť se v něm promítají veškeré programátorem \uv{\textcolor{cdorange}{naklikané}} změny.
+PyQt je odnoží multiplatformního frameworku Qt určenou speciálně pro Python. Qt je samo o sobě knihovnou jazyka C++, ale podobně jako pro Python existuje v mnoha modifikacích i pro mnoho dalších skriptovacích jazyků (Ruby - QtRuby, C\texttt{\#}, Pascal, Java, atd.). Výhodou PyQt je přehledná a podrobná dokumentace (společná pro všechny odnože), dále snadná instalace, kterou je možné provádět přímo z příkazového řádku příkazem \texttt{'\textbf{pip} install pyqt5'} a v neposlední řadě také nízké nároky na paměť. Aplikace vytvořené v Qt, resp. PyQt jsou nativní, tj. přizpůsobují svůj vzhled operačnímu systému, na kterém jsou spuštěny. PyQt rovněž nabízí možnost využití nástroje QtDesigner, což je vývojové prostředí umožňující poskládat grafické rozhraní z nabídky jednotlivých ovládacích prvků (viz obr. \ref{fig:QtDesigner}). Z prostředí QtDesigneru je dále možné generovat kód vytvořeného GUI do Pythonu a do něj ručně vepsat funkcionality jednotlivých widgetů. Nevýhodou použití tohoto nástroje je ale množství a značná nepřehlednost generovaného kódu, v němž je řada příkazů generována explicitně a je tudíž nadbytečná. 
 
 \begin{figure}[hbt!]
     \centering
@@ -144,11 +154,11 @@ PyQt je odnoží od multiplatformního frameworku Qt určenou speciálně pro Py
 
 \noindent Z pohledu skriptu je proto elegantnějším řešením napsat GUI ručně. Tento přístup je ale na druhou stranu časově výrazně náročnější. Obecně lze říci, že použití QtDesigneru je výhodné při tvorbě jednoduchých aplikací, zejména pro osobní použití, nebo jako podpůrného nástroje pro začátečníky.
 
-\noindent Pro komplexnější úlohy se tedy lépe hodí ruční psaní GUI. To sice vyžaduje jistou programovací zkušenost, nicméně nabízí oproti QtDesigneru určitou svobodu v možnosti rozšíření nabídky ovládacích prvků nadefinováním vlastních přímo v kódu a zároveň umožňuje docílit větší přehlednosti a úspornosti skriptu použitím pouze nezbytných příkazů.
+Pro komplexnější úlohy se tedy lépe hodí ruční psaní GUI. To sice vyžaduje jistou programovací zkušenost, nicméně nabízí oproti QtDesigneru určitou svobodu v možnosti rozšíření nabídky ovládacích prvků nadefinováním vlastních přímo v kódu a zároveň umožňuje docílit větší přehlednosti a úspornosti skriptu použitím implicitních příkazů.
 
-Nakonec byla pro srovnání obou frameworků v každém z nich generována  jednoduchá demonstrační aplikace, jejíž grafické rozhraní sestává z hlavního okna a dvou tlačítek (viz obr. č. \ref{fig:myfirstgui}). Při stisku tlačítka \texttt{Hello world!} program vypíše na konzoli pozdrav \uv{Hello world!}, při stisku druhého tlačítka se program ukončí. Skript obou variant implementace je dostupný v příloze \ref{PrilohaA} této práce.
+Pro srovnání obou frameworků byla v každém z nich generována  jednoduchá demonstrační aplikace, jejíž grafické rozhraní sestává z hlavního okna a dvou tlačítek (viz obr. č. \ref{fig:myfirstgui}). Při stisku tlačítka \texttt{Hello world!} program vypíše na konzoli pozdrav \uv{Hello world!}, při stisku druhého tlačítka se program ukončí. Skript obou variant implementace je dostupný v příloze \ref{PrilohaA} této práce.
 
-\begin{figure}[hbt!]
+\begin{figure}[h!]
 \centering
 \begin{minipage}[b][4cm]{5cm}
   \centering
@@ -163,11 +173,10 @@ Nakonec byla pro srovnání obou frameworků v každém z nich generována  jedn
 \caption{Aplikace \texttt{Hello world!} - ukázka výstupů srovnávaných frameworků}
 \label{fig:myfirstgui}
 \end{figure}
-\ldots .
 
 \newpage
 \section{Zpracování signálu}
-Tato kapitola se zaměřuje na vnitřní podstatu programu pro zpracování krystalografických dat, tj. na číslicové zpracování signálu, od stručného nastínění teorie signálů (viz sekce \ref{sec:signal}), přes problematiku jejich zpracování až ke konkrétním příkladům číslicových filtrů implementovaných v rámci programu (viz sekce \ref{sec:filtr1} až \ref{sec:filtr4}).
+Tato kapitola se zaměřuje na vnitřní podstatu programu pro zpracování krystalografických dat, tj. na číslicové zpracování signálu, od stručného nastínění teorie signálů (sekce \ref{sec:signal}), přes problematiku jejich zpracování až ke konkrétním příkladům číslicových filtrů implementovaných v rámci programu (sekce \ref{sec:filtr1} až \ref{sec:filtr4}).
 \subsection{Signály} \label{sec:signal}
 Signály jsou nositeli informace o podstatě svého zdroje, která je reprezentována okamžitou změnou jedné či více fyzikálních veličin v čase. \cite{uhlíř&sovka2002} Podle povahy signálů je lze dělit např. na spojité a diskrétní. Spojité signály jsou definované pro nekonečně mnoho hodnot nezávisle proměnné veličiny, u diskrétních signálů nezávisle proměnná nabývá pouze hodnot celočíselných. Signály mohou být diskrétní i pro hodnoty závisle proměnné (např. v amplitudě), v takovém případě je nazýváme kvantovanými, popř. číslicovými, jsou-li diskrétní jak v čase, tak v amplitudě (viz obr. č. \ref{fig:signal}).
 \begin{figure}[ht!]
@@ -197,27 +206,27 @@ Signály jsou nositeli informace o podstatě svého zdroje, která je reprezento
 \end{figure}
 
 
-Dalším kritériem pro klasifikaci signálů je jejich chování v čase. To je dáno okolnostmi jejich vzniku, fyzikální podstatou a dalšími faktory. V případě, že lze předvídat časový průběh signálu, nazýváme jej signálem deterministickým. V opačném případě, tedy pokud má jeho chování zcela náhodnou povahu, jde o signál stochastický.
-Běžné signály jsou obvykle analogového charakteru, tj. spojité v čase i amplitudě. Pro možnost jejich dalšího zpracování je proto potřeba je při jejich experimentálním získávání souběžně diskretizovat - sledovaná veličina je snímána pouze v určitých časových okamžicích (vzorkování) a zároveň jsou pomocí vestavěných A/D převodníků kvantovány. Výsledný signál je tak plně digitální, tedy diskrétní v čase i amplitudě. Takto upravený signál je možné podrobit číslicovému zpracování.
-To se provádí z důvodu potlačení, příp. zvýraznění určitých složek signálu. Složky, které jsou z pohledu sledovaného děje rušivé se nazývají šum a do signálu se dostávají už ve chvíli jeho vzniku, buď z vnitřního prostředí zdroje nebo vlivem okolí. Mezi základní nástroje signálového zpracování patří
+Dalším kritériem pro klasifikaci signálů je jejich chování v čase. To je dáno okolnostmi jejich vzniku, fyzikální podstatou a dalšími faktory. V případě, že lze předvídat časový průběh signálu, nazýváme jej signálem deterministickým. V opačném případě, tedy pokud má chování signálu náhodnou povahu, jde o signál stochastický.
+Běžné signály jsou obvykle analogového charakteru, tj. spojité v čase i amplitudě. Pro možnost jejich dalšího zpracování je proto potřeba signály při jejich získávání souběžně diskretizovat - sledovaná veličina je snímána pouze v určitých časových okamžicích (vzorkování) a zároveň jsou pomocí vestavěných A/D převodníků kvantovány. Výsledný signál je tak plně digitální, tedy diskrétní v čase i amplitudě. Takto upravený signál je možné podrobit číslicovému zpracování.
+Číslicové zpracování se provádí z důvodu potlačení, příp. zvýraznění určitých složek signálu. Složky, které jsou z pohledu sledovaného děje rušivé se nazývají šum a do signálu se dostávají už ve chvíli jeho vzniku, buď z vnitřního prostředí zdroje nebo vlivem okolí. Mezi základní nástroje signálového zpracování patří
 analogová a číslicová filtrace, časová, spektrální nebo časově-frekvenční analýza a další. Vzhledem ke komplexnosti problematiky zpracování signálu se tato práce zaměří pouze na jeden z jejích nástrojů, a to na číslicovou filtraci.
 
 \subsection{Číslicová filtrace signálu} \label{sec:filtry)}
 Filtrace signálu je proces zprostředkovávaný systémem, číslicovým filtrem, při němž dochází ke změně frekvenčního spektra vstupního signálu za účelem zvýraznění, resp. potlačení některých jeho složek. \cite{filtracedef}
-Číslicový filtr charakterizují tři základní vlastnosti - impulzní, přenosová a frekvenční charakteristika, které poskytují kompletní představu o chování filtru. Impulzní charakteristika udává chování filtru vyjádřené jeho odezvou na jednotkový puls. Na jejím základě lze filtry rozdělit na ty s konečnou  impulzní odezvou (nebo-li FIR, z angl. \textit{finite impulse response}), jejichž impulzní odezva má konečný počet nenulových hodnot, a na ty s nekonečnou impulzní odezvou (nebo-li IIR, z angl. \textit{infinite impulse response}), u nichž je počet nenulových hodnot impulzní odezvy nekonečný. Hlavní předností FIR filtrů je jejich stabilita a také poměrně snadný matematický popis, na druhou stranu jejich chování je poměrně vzdálené od chování ideálních filtrů (obr. č. \ref{fig:filtryfrekvs}). Pro IIR filtry je naopak typické \vspace{0.5cm} \ldots .
+Číslicový filtr charakterizují tři základní vlastnosti - impulzní, přenosová a frekvenční charakteristika, které poskytují kompletní představu o chování filtru. Impulzní charakteristika udává chování filtru vyjádřené jeho odezvou na jednotkový puls. Na základě impulzní charakteristiky lze filtry rozdělit na ty s konečnou  impulzní odezvou (nebo-li FIR, z angl. \textit{finite impulse response}), jejichž impulzní odezva má konečný počet nenulových hodnot, a na ty s nekonečnou impulzní odezvou (nebo-li IIR, z angl. \textit{infinite impulse response}), u nichž je počet nenulových hodnot impulzní odezvy nekonečný. Hlavní předností FIR filtrů je jejich stabilita a také poměrně snadný matematický popis, na druhou stranu jejich chování je poměrně vzdálené od chování ideálních filtrů (obr. č. \ref{fig:filtryfrekvs}). IIR filtry jsou v porovnání s FIR filtry efektivnější, tj. pro nižší řád filtru poskytují lepší výsledky, a to především díky svému rekurzivnímu charakteru. Vyšší efektivita IIR filtrů pak souvisí s nižší výpočetní náročností, která je z hlediska implementace nespornou výhodou. Na druhou stranu, na rozdíl od FIR filtrů hrozí u IIR filtrů potíže se stabilitou, která je dána hodnotami koeficientů přenosové funkce. Aby byl daný filtr stabilní, musí být všechny koeficienty jeho přenosové funkce v absolutní hodně menší než 1, tj. musí ležet uvnitř jednotkového kruhu v rovině $z$. \cite{}
 
-Převedením impulzní charakteristiky do frekvenční oblasti pomocí tzv. Z-transformace je možné získat přenosovou charakteristiku filtru.
+Přenosovou charakteristiku filtru je možné získat převedením impulzní charakteristiky do frekvenční oblasti pomocí tzv. Z-transformace:
 \begin{equation}
 H (z) = \frac{b_0 + b_1·z^{-1} + ... + b_n·z^{-n}}{1 + a_1·z^{-1} + ... + a_m·z^{-m}}
 \end{equation}
-Ta udává odezvu filtru na libovolný vstupní signál. Ekvivalentně je možné získat odezvu filtru konvolucí vstupu s jeho impulzní charakteristikou.
+Přenosová funkce udává odezvu filtru na libovolný vstupní signál. Ekvivalentně je možné získat odezvu filtru konvolucí vstupu s jeho impulzní charakteristikou:
 \begin{equation}
 y [n] = x [n] * h [n] = \sum_{k = -\infty}^{\infty} x[k]·h[n-k]
 \end{equation}
 
 \noindent Frekvenční charakteristika filtru je odvozena od impulzní charakteristiky pomocí diskrétní Fourierovy transformace (DTFT, z angl. \textit{discrete time Fourier transform}).
-\todoin[bordercolor=lavender!80,backgroundcolor=lavender!40]{Pro mě: tady by to chtělo ještě nějak logicky propojit}
-\noindent Podle účelu lze pak filtry rozdělit na základě jejich frekvenční selektivity na dolní propusti (angl. \textit{low-pass}), horní propusti (angl. \textit{high-pass}), pásmové propusti (angl. \textit{band-pass}) a pásmové zádrže (angl. \textit{band-stop}). Jak je patrné z obr. č.\ref{fig:filtryfrekvs}, filtry typu propust konzervují požadované frekvence signálu a ostatní potlačují, naopak filtry typu zádrž požadované frekvence potlačí a zbytek signálu ponechají bez zásahu.
+
+Podle účelu lze filtry rozdělit na základě jejich frekvenční selektivity na dolní propusti (angl. \textit{low-pass}), horní propusti (angl. \textit{high-pass}), pásmové propusti (angl. \textit{band-pass}) a pásmové zádrže (angl. \textit{band-stop}). Jak je patrné z obr. č.\ref{fig:filtryfrekvs}, filtry typu propust konzervují požadované frekvence signálu a ostatní potlačují, naopak filtry typu zádrž požadované frekvence potlačí a zbytek signálu ponechají bez zásahu.
 
 \begin{figure}[hbt!]
 \centering
@@ -244,11 +253,13 @@ y [n] = x [n] * h [n] = \sum_{k = -\infty}^{\infty} x[k]·h[n-k]
 \caption{Frekvenční charakteristiky ideálních číslicových filtrů}
 \label{fig:filtryfrekvs}
 \end{figure}
+
+Chování reálných filtrů 
 % v praxi chování filtrů neideální
 % úspěšnost filtrace dána zašuměností signálu (SNR)
-\todoin[bordercolor=lavender!80,backgroundcolor=lavender!40]{Pro mě: tady by to chtělo ještě nějak logicky propojit}
 
-\noindent Dále budou blíže popsány konkrétní filtry, které byly zařazeny do programu pro zpracování krystalografických dat.
+
+\noindent Dále budou blíže popsány konkrétní filtry, které byly zařazeny do programu pro zpracování krystalografických dat. Všechny tyto filtry jsou koncipovány jako low-pass filtry, jsou tedy určeny k eliminaci vysokofrekvenčního šumu.
 \newpage
 \subsubsection{Filtr s nulovým fázovým posunem}
 \label{sec:filtr1}
@@ -309,7 +320,7 @@ Dalším z použitých filtrů je filtr mediánový, jehož principem je nahradi
 \noindent Tady: \textcolor{cdorange}{něco o použití MF ve zpracování obrazů} (viz obr. č. \ref{fig:median_ukazka})
 
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
   \centering
   {\includegraphics[width=0.85\linewidth]{Noisy-image-and-noise-removal-image-by-median-filter.png}\vspace{0.25cm}}
   \caption{Ukázka odstranění aditivního \textit{salt-and-pepper} šumu dvourozměrným mediánovým filtrem při zpracování obrazu (převzato z \cite{noisemedian})}
@@ -326,7 +337,7 @@ Exponenciální vyhlazovací filtr, nebo také exponenciální klouzavý průmě
 \end{gathered}
 \vspace{0.25cm}
 \end{equation}
-Z této rovnice vyplývá, že pro rostoucí hodnotu vyhlazovacího parametru se účinnost filtru snižuje a pro $\alpha$ = 1 je hodnota výstupu rovna hodnotě vstupní. Dosazením vztahu pro výpočet $i$-té výstupní hodnoty do téže rovnice je obdržena geometrická řada objasňující exponenciální podstatu tohoto filtru:
+Z této rovnice vyplývá, že pro rostoucí hodnotu vyhlazovacího parametru se účinnost filtru snižuje a pro $\alpha$ = 1 je hodnota výstupu rovna hodnotě vstupní. Dosazením vztahu pro výpočet \textit{i}-té výstupní hodnoty do téže rovnice je obdržena geometrická řada objasňující exponenciální podstatu tohoto filtru:
 \begin{equation} \label{eq:EMAexp}
     y_{i} = \alpha·[(1-\alpha)·x_{i-1}+(1-\alpha)^{2}·x_{i-2}+_{\ldots}+(1-\alpha)^{i-1}·x_{1}]+(1-\alpha)^{i}·x_{0}
 \vspace{0.25cm}
@@ -347,10 +358,23 @@ Přidáním dalších vyhlazovacích parametrů lze exponenciální vyhlazován�
 \newpage
 \section{Tvorba uživatelského rozhraní a zpracování krystalografických dat}
 Předmětem praktické části této práce byly dva hlavní úkoly, a to implementovat algoritmy pro zpracování dat získaných rentgenovou krystalografií a následně naprogramovat v jazyce Python uživatelské rozhraní umožnující snadnou práci s tímto programem. V následujícím textu bude popsán postup tvorby programu chronologicky tak, jak se předpokládá, že budou jednotlivé prvky využity uživatelem. Tedy od spuštění programu (sekce \ref{sec:mainwin}) až po export zpracovaného signálu do souborů třetích stran (sekce \ref{sec:export}) 
+
 \subsection{Hlavní okno a funkce} \label{sec:mainwin}
-Tato kapitola se zaměří na \ldots
+V této kapitole bude popsán ústřední funkční prvek aplikace pro zpracování krystalografických dat, hlavní okno a jeho součásti viz obr. č. \ref{fig:mainWin}). Hlavní okno tvoří tělo programu a jsou na něj navázány i základní funkce jako otevření datového souboru ke zpracování, import dat z něj a jejich vizualizace. Tyto funkce budou blíže popsány níže.
+
 \subsubsection{Import dat a jejich vizualizace} \label{sec:import}
-\ldots .
+Proces zpracování krystalografických dat začíná načtením naměřených dat ze souboru, které lze provést stisknutím tlačítka \uv{Open file}, kdy se otevře dialogové okno pro výběr požadovaného souboru. Podporovaným datovým typem je textový soubor. Načítání dat probíhá pomocí vestavěné funkce do matice odpovídající velikosti. Po provedení výběru souboru se dialogové okno automaticky uzavře. V případě opuštění okna bez výběru souboru program vypíše chybovou hlášku.
+
+Pro vizualizaci dat \ldots .
+\clearpage
+
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=\linewidth]{mainWin_grph.PNG}
+    \caption{Hlavní okno programu}
+    \label{fig:mainWin}
+\end{figure}
+
 \subsubsection{Práce s daty, výběr kanálu} \label{sec:channel}
 \ldots .
 \subsection{Záložky a funkce} \label{sec:fcntabs}
