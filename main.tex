@@ -15,16 +15,17 @@
 \usepackage{listings}
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{darkcyan}{rgb}{0.0, 0.55, 0.55}
+\definecolor{backcolour}{rgb}{0.98,0.98,0.98}
+\definecolor{royalblue}{rgb}{0.0, 0.14, 0.4}
 
 %Code listing style named "mystyle"
 \lstdefinestyle{mystyle}{
   backgroundcolor=\color{backcolour},   commentstyle=\color{codegreen},
-  keywordstyle=\color{magenta},
+  keywordstyle=\color{royalblue},
   numberstyle=\tiny\color{codegray},
-  stringstyle=\color{codepurple},
-  basicstyle=\footnotesize,
+  stringstyle=\color{darkcyan},
+  basicstyle=\footnotesize\ttfamily,
   breakatwhitespace=false,         
   breaklines=true,                 
   captionpos=b,                    
@@ -122,13 +123,13 @@ Jak vyplývá ze statistik dvou nezávislých ukazatelů popularity programovac�
 Důvodů k jeho oblibě je hned z několik. Hlavním z nich je srozumitelnost produkovaného kódu a tudíž jeho snadná osvojitelnost i pro uživatele bez větších zkušeností s programováním. S tím souvisí široká uživatelská komunita, která je, vedle propracované dokumentace, důležitým nástrojem při řešení problémů.  Jedná se rovněž o multiplatformní jazyk, tj. programy v něm napsané lze bez větších problémů spustit prakticky v libovolném operačním systému, ať už Windows nebo v systémech na bázi Unix (Linux, Mac OS X apod.). V neposlední řadě je značnou výhodou Pythonu jeho rozsáhlá standardní knihovna, která umožňuje celou řadu úkonů. Zároveň je ale pro specializované operace k dispozici velké množství doplňkových knihoven třetích stran.
 
 
-\noindent Jak již bylo řečeno, Python je především objektově orientovaným jazykem. Podstatu objektově orientovaného přístupu tvoří tzv. objekty. Objekty jsou seskupení dat s určitými vlastnostmi a funkcionalitami pracující na principu černé skříňky, tj. vykonávají činnosti a komunikaci s okolím bez nutnosti znát jejich vnitřní podstatu. Nadřazeným prvkem objektu je datový typ, neboli třída. Ten sdružuje samotné objekty a také operace, které je možné s nimi provádět. Příkladem může být např. třída \texttt{int} a do ní náležící objekt, číslo \texttt{3}. Třída \texttt{int} tedy zaštiťuje celá čísla (v počítači ukládána s konečným počtem desetinných míst, z angl.\textit{integers}), s nimiž je možné provádět matematické operace (sčítání, dělení, násobení\ldots), zápis do matic apod.
+\noindent Jak již bylo řečeno, Python je především objektově orientovaným jazykem. Podstatu objektově orientovaného přístupu tvoří tzv. objekty. Objekty jsou seskupení dat s určitými vlastnostmi a funkcionalitami pracující na principu černé skříňky, tj. vykonávají činnosti a komunikaci s okolím bez nutnosti znát jejich vnitřní podstatu. Nadřazeným prvkem objektu je datový typ, neboli třída. Ten sdružuje samotné objekty a také operace, které je možné s nimi provádět. Příkladem může být např. třída \texttt{int} a do ní náležící objekt, číslo \texttt{3}. Třída \texttt{int} tedy pracuje s celými čísly (v počítači ukládána s konečným počtem desetinných míst, z angl.\textit{integers}), s nimiž je možné provádět matematické operace (sčítání, dělení, násobení\ldots), zápis do vektorů a matic apod.
 
 
 Výhoda použití objektově-orientovaného přístupu spočívá v tzv. dědičnosti, díky níž objekty náležící do určité podtřídy odvozené od třídy hlavní přebírají (dědí) její vlastnosti. Tím dochází k úspoře vyprodukovaného kódu, neboť tyto objekty z podtříd není nutné znovu specifikovat. Vzniklý kód je tak přehlednější a celkově úspornější. Toho lze využít např. při tvorbě uživatelských rozhraní, kdy jsou kladeny nároky především na velikost skriptu.
 
 \subsection{Grafické uživatelské rozhraní} \label{sec:GUI}
-Grafické uživatelské rozhraní, zkráceně GUI (z angl. \textit{Graphical User Interface}), je nástroj, s jehož pomocí je realizována oboustranná interakce mezi programem a uživatelem. Směrem dovnitř přicházejí vstupy zadané uživatelem, na než následně reagují odpovídající výstupy programu. Vstupy jsou uživatelem vysílány pomocí interaktivních ovládacích prvků, např. ve formě tlačítek, posuvníků, rolovacích seznamů apod. Výstupy programu se pak mohou projevovat rovněž nejrůznější způsoby, ať už jako procesy na pozadí nebo přímo akcemi v rámci grafických oken programu. Vnitřní podstatu fungování GUI si pak lze představit jako jakousi \uv{nekonečnou} smyčku událostí, která je vyvolána spuštěním programu a vytvořením hlavního okna s jeho ovládacími prvky. Ta následně čeká na vstup zvenčí. Pakliže takový vstup nepřichází, setrvává ve vyčkávací pozici. Jakmile jej ale dostane, postupuje dle předepsaného algoritmu až na konec, poté se opět vrátí do vyčkávací pozice. Tento cyklus se opakuje do té doby, než uživatel vyšle signál k ukončení programu. Tento proces je schematicky znázorněn na obr. č. \ref{fig:Gui} (převzato z \cite{Python3Summerfield:2} a upraveno).
+Grafické uživatelské rozhraní, zkráceně GUI (z angl. \textit{Graphical User Interface}), je nástroj, s jehož pomocí je realizována oboustranná interakce mezi programem a uživatelem. Směrem dovnitř přicházejí vstupy zadané uživatelem, na než následně reagují odpovídající výstupy programu. Vstupy jsou uživatelem vysílány pomocí interaktivních ovládacích prvků, např. ve formě tlačítek, posuvníků, rolovacích seznamů apod. Výstupy programu se pak mohou projevovat rovněž nejrůznější způsoby, ať už jako procesy na pozadí nebo přímo akcemi v rámci grafických oken programu. Vnitřní podstatu fungování GUI si pak lze představit jako jakousi \uv{nekonečnou} smyčku událostí, která je vyvolána spuštěním programu a vytvořením hlavního okna s jeho ovládacími prvky. Ta následně čeká na vstup zvenčí. Pakliže takový vstup nepřichází, setrvává ve vyčkávací pozici. Jakmile jej ale dostane, postupuje dle předepsaného algoritmu až na konec, poté se opět vrátí do vyčkávací pozice. Cyklus se opakuje do té doby, než uživatel vyšle signál k ukončení programu. Princip fungování programu s uživatelským rozhraním je schematicky znázorněn na obr. č. \ref{fig:Gui} (převzato z \cite{Python3Summerfield:2} a upraveno).
 \clearpage
 \begin{figure}[ht!]
     \centering
@@ -213,7 +214,7 @@ analogová a číslicová filtrace, časová, spektrální nebo časově-frekven
 
 \subsection{Číslicová filtrace signálu} \label{sec:filtry)}
 Filtrace signálu je proces zprostředkovávaný systémem, číslicovým filtrem, při němž dochází ke změně frekvenčního spektra vstupního signálu za účelem zvýraznění, resp. potlačení některých jeho složek. \cite{filtracedef}
-Číslicový filtr charakterizují tři základní vlastnosti - impulzní, přenosová a frekvenční charakteristika, které poskytují kompletní představu o chování filtru. Impulzní charakteristika udává chování filtru vyjádřené jeho odezvou na jednotkový puls. Na základě impulzní charakteristiky lze filtry rozdělit na ty s konečnou  impulzní odezvou (nebo-li FIR, z angl. \textit{finite impulse response}), jejichž impulzní odezva má konečný počet nenulových hodnot, a na ty s nekonečnou impulzní odezvou (nebo-li IIR, z angl. \textit{infinite impulse response}), u nichž je počet nenulových hodnot impulzní odezvy nekonečný. Hlavní předností FIR filtrů je jejich stabilita a také poměrně snadný matematický popis, na druhou stranu jejich chování je poměrně vzdálené od chování ideálních filtrů (obr. č. \ref{fig:filtryfrekvs}). IIR filtry jsou v porovnání s FIR filtry efektivnější, tj. pro nižší řád filtru poskytují lepší výsledky, a to především díky svému rekurzivnímu charakteru. Vyšší efektivita IIR filtrů pak souvisí s nižší výpočetní náročností, která je z hlediska implementace nespornou výhodou. Na druhou stranu, na rozdíl od FIR filtrů hrozí u IIR filtrů potíže se stabilitou, která je dána hodnotami koeficientů přenosové funkce. Aby byl daný filtr stabilní, musí být všechny koeficienty jeho přenosové funkce v absolutní hodně menší než 1, tj. musí ležet uvnitř jednotkového kruhu v rovině $z$. \cite{}
+Číslicový filtr charakterizují tři základní vlastnosti - impulzní, přenosová a frekvenční charakteristika, které poskytují kompletní představu o chování filtru. Impulzní charakteristika udává chování filtru vyjádřené jeho odezvou na jednotkový puls. Na základě impulzní charakteristiky lze filtry rozdělit na ty s konečnou  impulzní odezvou (nebo-li FIR, z angl. \textit{finite impulse response}), jejichž impulzní odezva má konečný počet nenulových hodnot, a na ty s nekonečnou impulzní odezvou (nebo-li IIR, z angl. \textit{infinite impulse response}), u nichž je počet nenulových hodnot impulzní odezvy nekonečný. Hlavní předností FIR filtrů je jejich stabilita a také poměrně snadný matematický popis, na druhou stranu jejich chování je poměrně vzdálené od chování ideálních filtrů (obr. č. \ref{fig:filtryfrekvs}). IIR filtry jsou v porovnání s FIR filtry efektivnější, tj. pro nižší řád filtru poskytují lepší výsledky, a to především díky svému rekurzivnímu charakteru. Vyšší efektivita IIR filtrů pak souvisí s nižší výpočetní náročností, která je z hlediska implementace nespornou výhodou. Na druhou stranu, na rozdíl od FIR filtrů hrozí u IIR filtrů potíže se stabilitou, která je dána hodnotami koeficientů přenosové funkce. Aby byl daný filtr stabilní, musí být všechny póly jeho přenosové funkce v absolutní hodně menší než 1, tj. musí ležet uvnitř jednotkového kruhu v rovině $z$. \cite{iir}
 
 Přenosovou charakteristiku filtru je možné získat převedením impulzní charakteristiky do frekvenční oblasti pomocí tzv. Z-transformace:
 \begin{equation}
@@ -263,7 +264,7 @@ Chování reálných filtrů
 \newpage
 \subsubsection{Filtr s nulovým fázovým posunem}
 \label{sec:filtr1}
-Prvním z číslicových filtrů využitých v rámci programu je filtr s nulovým fázovým posunem. K implementaci tohoto druhu filtrace jsou využívány jak filtry FIR typu, tak IIR typu. Ty jsou výpočetně méně náročné, zároveň ale vykazují fázové zkreslení způsobené nelinearitou frekvenční charakteristiky filtru, kdy dochází k nestejnému zpožďování různých složek signálu. U FIR filtrů k tomuto jevu také dochází, zkreslení je však vlivem lineární frekvenční charakteristiky konstantní a nedochází proto k deformaci časové řady. Efekt fázového zkreslení lze částečně potlačit právě zero-phase filtrací. \textcolor{cdorange}{V rámci programu byl použit filtr lineární (viz \ref{sec:exp_filtrace})}.
+Prvním z číslicových filtrů využitých v rámci programu je filtr s nulovým fázovým posunem. K implementaci tohoto druhu filtrace jsou využívány jak filtry FIR typu, tak IIR typu. Ty jsou výpočetně méně náročné, zároveň ale vykazují fázové zkreslení způsobené nelinearitou frekvenční charakteristiky filtru, kdy dochází k nestejnému zpožďování různých složek signálu. U FIR filtrů k tomuto jevu také dochází, zkreslení je však vlivem lineární frekvenční charakteristiky konstantní a nedochází proto k deformaci časové řady. Efekt fázového zkreslení lze částečně potlačit právě zero-phase filtrací. 
 
 Pro docílení nulového fázového posunu se provádí filtrace v dopředném a zpětném směru. To je možné provést dvěma způsoby, buď je nejprve signál filtrován, následně překlopen v čase, poté znova filtrován a nakonec opět překlopen v čase nebo jsou tyto operace provedeny v opačném pořadí, tj. nejprve překlopení signálu v čase a poté filtrace. Oba tyto postupy poskytují ekvivalentní výsledky, jedná se tedy pouze o formální odlišnost ve vnitřním fungování zero-phase systému. Schéma filtrace s nulovým fázovým posunem je znázorněno na obr. č. \ref{fig:zerophase}.
 \begin{figure}[hbt!]
@@ -273,7 +274,6 @@ Pro docílení nulového fázového posunu se provádí filtrace v dopředném a
   \label{fig:zerophase}
 \end{figure}
 
-\todoin[bordercolor=lavender!80,backgroundcolor=lavender!40]{ještě něco dopsat?}
 
 \subsubsection{Savitzky-Golay filtr}
 \label{sec:filtr2}
@@ -297,35 +297,33 @@ Z obr. č. \ref{fig:theo_savitzkygol} je patrné, že při stejné délce okna p
 
 \subsubsection{Mediánový filtr}
 \label{sec:filtr3}
-Dalším z použitých filtrů je filtr mediánový, jehož principem je nahradit i-tou hodnotu signálu mediánem, tedy prostřední hodnotou, posouvajícího se okna definované délky. Vzhledem k zohledňování předcházejících hodnot při výpočtu odezvy se mediánový filtr řadí mezi nelineární filtry. Pro získání mediánu je potřeba hodnoty v okně nejprve seřadit podle velikosti vzestupně a následně určit prostřední hodnotu podsouboru. Okno však může mít libovolný počet hodnot. V případě lichého počtu je mediánem reálná prostřední hodnota, v případě sudého počtu hodnot je za medián považován aritmetický průměr dvou sousedících prostředních hodnot. Při použití mediánového filtru v některých programovacích jazycích však platí restrikce pouze na okna o lichém počtu hodnot (např. Python - vestavěná funkce knihovny scipy \texttt{medfilt()}). Přes poměrně snadný princip mediánového filtru (viz obr. č. \ref{fig:theo_median}) je při jeho implementaci potřeba ošetřit jeden problém, a to sice výpočet odezvy pro krajní hodnoty datového souboru. K řešení tohoto problému je možné přistoupit dvěma způsoby. V obou případech je nutné chybějící pole pro výpočet mediánu nahradit, a to buď sousedními hodnotami \textit{i}-tého bodu, nebo doplněním chybějících hodnot v okně nulami. Na obrázku \ref{fig:median_boundary} je uveden příklad výpočtu odezvy MF na hranici datového souboru pro okno o velikosti 9. Výhody, resp. nevýhody obou přístupů budou rozebrány v diskuzi (sekce \ref{sec:diskuze}) této práce.
-\vspace{4cm}
-\begin{figure}[hbt!]
+Dalším z použitých filtrů je filtr mediánový. Principem mediánového filtru je nahradit \textit{i}-tou hodnotu signálu mediánem, tedy prostřední hodnotou, posouvajícího se okna definované délky. Vzhledem k zohledňování předcházejících hodnot při výpočtu odezvy se mediánový filtr řadí mezi nelineární filtry. Pro získání mediánu je potřeba hodnoty v okně nejprve seřadit podle velikosti vzestupně a následně určit prostřední hodnotu podsouboru. Okno může mít libovolný počet hodnot. V případě lichého počtu hodnot v okně je mediánem reálná prostřední hodnota, v případě sudého počtu hodnot je za medián považován aritmetický průměr dvou sousedících prostředních hodnot. Při použití mediánového filtru v některých programovacích jazycích však platí restrikce pouze na okna o lichém počtu hodnot (např. Python - vestavěná funkce knihovny scipy \texttt{medfilt()}). Přes poměrně snadný princip mediánového filtru (viz obr. č. \ref{fig:theo_median}) je při jeho implementaci potřeba ošetřit jeden problém, a to sice výpočet odezvy pro krajní hodnoty datového souboru. K řešení tohoto problému je možné přistoupit dvěma způsoby. V obou případech je nutné chybějící pole pro výpočet mediánu nahradit, a to buď sousedními hodnotami \textit{i}-tého bodu, nebo doplněním chybějících hodnot v okně nulami. Na obrázcích \ref{fig:median_boundary} a \ref{fig:median_zero} jsou uvedeny oba příklady výpočtu odezvy MF na hranici datového souboru pro okno o velikosti 5. Výhody, resp. nevýhody obou přístupů budou rozebrány v diskuzi (sekce \ref{sec:diskuze}) této práce.\vspace{6cm}
+
+\begin{figure}[ht!]
 \centering
-\begin{minipage}[b][4cm]{5cm}
+\begin{minipage}[b]{0.9\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{median_boundary.png}\vspace{0.25cm}
-  \subcaption{Chování mediánového filtru v krajních bodech datového souboru}
+  \includegraphics[width=\linewidth]{median_okraj(13).png}\vspace{0.25cm}
+  \subcaption{Chování mediánového filtru v krajních bodech datového souboru - nahrazení krajních hodnot sousedními hodnotami}
   \label{fig:median_boundary}
-\end{minipage}\hspace{1cm}
-\begin{minipage}[b][4cm]{5cm}
+\end{minipage}
+\begin{minipage}[b]{0.9\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{median_middle.png}\vspace{0.25cm
+  \includegraphics[width=\linewidth]{median_okraj(00).png}\vspace{0.25cm
+  \subcaption{Chování mediánového filtru v krajních bodech datového souboru - nahrazení krajních hodnot nulami}
+  \label{fig:median_zero}}
+\end{minipage}
+\begin{minipage}[b]{0.8\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{median_uprostred.png}\vspace{0.25cm
   \subcaption{Chování mediánového filtru uprostřed datového souboru}
   \label{fig:median_middle}}
 \end{minipage}\vspace{0.4cm}
-\caption{Princip fungování mediánové filtrace}
+\caption{Princip mediánové filtrace}
 \label{fig:theo_median}
 \end{figure}
 
-\noindent Tady: \textcolor{cdorange}{něco o použití MF ve zpracování obrazů} (viz obr. č. \ref{fig:median_ukazka})
 
-
-\begin{figure}[ht!]
-  \centering
-  {\includegraphics[width=0.85\linewidth]{Noisy-image-and-noise-removal-image-by-median-filter.png}\vspace{0.25cm}}
-  \caption{Ukázka odstranění aditivního \textit{salt-and-pepper} šumu dvourozměrným mediánovým filtrem při zpracování obrazu (převzato z \cite{noisemedian})}
-  \label{fig:median_ukazka}
-\end{figure}
 
 \subsubsection{Exponenciální vyhlazování}
 \label{sec:filtr4}
@@ -360,13 +358,16 @@ Přidáním dalších vyhlazovacích parametrů lze exponenciální vyhlazován�
 Předmětem praktické části této práce byly dva hlavní úkoly, a to implementovat algoritmy pro zpracování dat získaných rentgenovou krystalografií a následně naprogramovat v jazyce Python uživatelské rozhraní umožnující snadnou práci s tímto programem. V následujícím textu bude popsán postup tvorby programu chronologicky tak, jak se předpokládá, že budou jednotlivé prvky využity uživatelem. Tedy od spuštění programu (sekce \ref{sec:mainwin}) až po export zpracovaného signálu do souborů třetích stran (sekce \ref{sec:export}) 
 
 \subsection{Hlavní okno a funkce} \label{sec:mainwin}
-V této kapitole bude popsán ústřední funkční prvek aplikace pro zpracování krystalografických dat, hlavní okno a jeho součásti viz obr. č. \ref{fig:mainWin}). Hlavní okno tvoří tělo programu a jsou na něj navázány i základní funkce jako otevření datového souboru ke zpracování, import dat z něj a jejich vizualizace. Tyto funkce budou blíže popsány níže.
+V této kapitole bude rozebrán ústřední funkční prvek aplikace pro zpracování krystalografických dat, hlavní okno a jeho součásti (viz obr. č. \ref{fig:mainWin}). Hlavní okno tvoří tělo celého programu, na nějž jsou navázány i základní funkce jako otevření datového souboru ke zpracování, import dat z něj a jejich vizualizace. Tyto funkce budou blíže popsány níže.
 
 \subsubsection{Import dat a jejich vizualizace} \label{sec:import}
-Proces zpracování krystalografických dat začíná načtením naměřených dat ze souboru, které lze provést stisknutím tlačítka \uv{Open file}, kdy se otevře dialogové okno pro výběr požadovaného souboru. Podporovaným datovým typem je textový soubor. Načítání dat probíhá pomocí vestavěné funkce do matice odpovídající velikosti. Po provedení výběru souboru se dialogové okno automaticky uzavře. V případě opuštění okna bez výběru souboru program vypíše chybovou hlášku.
+Proces zpracování krystalografických dat začíná načtením naměřených dat ze souboru, které lze provést stisknutím tlačítka \uv{Open file}, kdy se otevře dialogové okno pro výběr požadovaného souboru. Dialogové okno je realizováno pomocí vestavěné funkce knihovny PyQt5:
+\begin{center}
+ \texttt{PyQt5.QtWidgets.QFileDialog.getOpenFileName()}.   
+\end{center}
+\noindent Podporovaným datovým typem je textový soubor, z něhož jsou načtena data do matice odpovídající velikosti. Po provedení výběru souboru se dialogové okno automaticky uzavře a zároveň se v horní části okna zobrazí cesta v adresáři k vybranému souboru. V případě opuštění okna bez výběru souboru program vypíše chybovou hlášku. 
 
-Pro vizualizaci dat \ldots .
-\clearpage
+Pro vizualizaci dat slouží centrální widget hlavního okna, do něhož je umístěno plátno knihovny matplotlib. Na ose \textbf{x} je vynesen čas, na ose \textbf{y} úhel ohybu paprsku ($\theta$) a na ose \textbf{z} intenzita prošlého RTG záření. S grafem je možno podle potřeb uživatele otáčet, přibližovat jej atp., a to pomocí ovládacího panelu v dolní části okna.
 
 \begin{figure}[hbt!]
     \centering
@@ -376,7 +377,7 @@ Pro vizualizaci dat \ldots .
 \end{figure}
 
 \subsubsection{Práce s daty, výběr kanálu} \label{sec:channel}
-\ldots .
+Po vykreslení dat a jejich vizuálním posouzením je možné v pravé dolní části hlavního okna provést výběr datového kanálu, tedy výřezu dat pro daný úhel $\theta$, který je z pohledu vyhodnocení dat zajímavý. 
 \subsection{Záložky a funkce} \label{sec:fcntabs}
 V této části bude \ldots .
 
