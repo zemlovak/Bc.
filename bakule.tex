@@ -340,32 +340,34 @@ Z této rovnice vyplývá, že pro rostoucí hodnotu vyhlazovacího parametru se
     y_{i} = \alpha·[(1-\alpha)·x_{i-1}+(1-\alpha)^{2}·x_{i-2}+_{\ldots}+(1-\alpha)^{i-1}·x_{1}]+(1-\alpha)^{i}·x_{0}
 \vspace{0.25cm}
 \end{equation}
-Závislost váhy hodnoty na její vzdálenosti od současné hodnoty je graficky znázorněna na obr. č. \ref{fig:EMAexp}. Z povahy křivky i rovnice spojnice trendu je patrné, že se skutečně jedná o exponenciálu.
+Závislost váhy hodnoty na její vzdálenosti od současné hodnoty je graficky znázorněna na obr. č. \ref{fig:EMAexp}. Z povahy křivky je patrné, že se skutečně jedná o exponenciálu, navíc s klesající tendencí, z čehož vyplývá, že skutečně čím vzdálenější je hodnota od hodnoty aktuální, tím menší má význam pro výpočet odezvy filtru.
+
+Přidáním dalších vyhlazovacích parametrů lze exponenciální vyhlazování provádět vícenásobně. Dvojité vyhlazování spočívá v zařazení trend vyhlazujícího parametru $\beta$. Trojnásobné vyhlazovaní pak zohledňuje i sezónnost sledovaného děje vnesením třetího parametru $\gamma$. Tyto pokročilé metody ale nejsou předmětem této práce, ta se dále zaměřuje pouze na jednoduché exponenciální vyhlazování.
 
 \begin{figure}[hbt!]
     \centering
-    \includegraphics[width=8cm]{EMAexp.png}
-    \caption{\tiny Křivka exponenciální závislosti váhování minulých hodnot-provizorium, obr. tam možná vůbec nebude\ldots}
+    \includegraphics[width=0.9\linewidth]{EMAexp1.png}
+    \caption{Křivka závislosti váhy hodnoty na její vzdálenosti od hodnoty aktuální}
     \label{fig:EMAexp}
 \end{figure}
 
-Přidáním dalších vyhlazovacích parametrů lze exponenciální vyhlazování provádět vícenásobně. Dvojité vyhlazování spočívá v zařazení trend vyhlazujícího parametru $\beta$. Trojnásobné vyhlazovaní pak zohledňuje i sezónnost sledovaného děje vnesením třetího parametru $\gamma$. Tyto pokročilé metody ale nejsou předmětem této práce, ta se dále zaměřuje pouze na jednoduché exponenciální vyhlazování.
 %%
-
+\clearpage
 % praktická část
-\newpage
 \section{Tvorba uživatelského rozhraní a zpracování krystalografických dat}
-Předmětem praktické části této práce byly dva hlavní úkoly, a to implementovat algoritmy pro zpracování dat získaných rentgenovou krystalografií a následně naprogramovat v jazyce Python uživatelské rozhraní umožnující snadnou práci s tímto programem. V následujícím textu bude popsán postup tvorby programu chronologicky tak, jak se předpokládá, že budou jednotlivé prvky využity uživatelem. Tedy od spuštění programu (sekce \ref{sec:mainwin}) až po export zpracovaného signálu do souborů třetích stran (sekce \ref{sec:export}) 
+Předmětem praktické části této práce byly dva hlavní úkoly, a to implementovat algoritmy pro zpracování dat získaných rentgenovou krystalografií a následně naprogramovat v jazyce Python uživatelské rozhraní umožnující snadnou práci s tímto programem. V následujícím textu bude popsán postup tvorby programu chronologicky tak, jak se předpokládá, že budou jednotlivé prvky využity uživatelem. Tedy od spuštění programu (sekce \ref{sec:mainwin}) až po export zpracovaného signálu do souborů třetích stran (sekce \ref{sec:export}). K tvorbě programu byl použit programovací jazyk Python ve verzi 3.6.6 a některé jeho knihovny, jako např. \textbf{matplotlib}, \textbf{scipy}, \textbf{PySide}, \textbf{numpy} a další. K implementaci uživatelského prostředí pak byla použita knihovna GUI PyQt5 (verze 5.11.3). Zdrojový kód aplikace je přiložen k této práci na CD.
 
 \subsection{Hlavní okno a funkce} \label{sec:mainwin}
-V této kapitole bude rozebrán ústřední funkční prvek aplikace pro zpracování krystalografických dat, hlavní okno a jeho součásti (viz obr. č. \ref{fig:mainWin}). Hlavní okno tvoří tělo celého programu, na nějž jsou navázány i základní funkce jako otevření datového souboru ke zpracování, import dat z něj a jejich vizualizace. Tyto funkce budou blíže popsány níže.
+V této kapitole bude rozebrán ústřední funkční prvek aplikace pro zpracování krystalografických dat, hlavní okno a jeho součásti (viz obr. č. \ref{fig:mainWin}).
+
+Před výstavbou samotného GUI je nezbytné vytvořit tělo skriptu obsahující nezbytné náležitosti, jako záhlaví s importem potřebných knihoven a jejich prvků nebo zápatí spouštějící smyčku programu. Dalším krokem je vytvoření hlavního okna a specifikace jeho vlastností. Hlavní okno tvoří tělo celého programu, na nějž jsou navázány další funkce a widgety. V případě programu pro zpracování XRD dat hlavní okno obsahuje widgety pro otevření datového souboru ke zpracování, import dat z něj a nástroje pro vizualizaci. Tyto funkce budou blíže popsány níže.
 
 \subsubsection{Import dat a jejich vizualizace} \label{sec:import}
-Proces zpracování krystalografických dat začíná načtením naměřených dat ze souboru, které lze provést stisknutím tlačítka \uv{Open file}, kdy se otevře dialogové okno pro výběr požadovaného souboru. Dialogové okno je realizováno pomocí vestavěné funkce knihovny PyQt5:
+Proces zpracování krystalografických dat začíná načtením naměřených dat ze souboru. To lze provést stisknutím tlačítka \uv{Open file}, které otevře dialogové okno pro výběr požadovaného souboru. Dialogové okno je realizováno pomocí vestavěné funkce knihovny PyQt5:
 \begin{center}
  \texttt{PyQt5.QtWidgets.QFileDialog.getOpenFileName()}.   
 \end{center}
-\noindent Podporovaným datovým typem je textový soubor, z něhož jsou načtena data do matice odpovídající velikosti. Po provedení výběru souboru se dialogové okno automaticky uzavře a zároveň se v horní části okna zobrazí cesta v adresáři k vybranému souboru. V případě opuštění okna bez výběru souboru program vypíše chybovou hlášku. 
+\noindent Podporovaným datovým typem je textový soubor s tabulátorovým oddělovačem (.dat, .csv apod.). Data jsou ze souboru načtena do matice odpovídající velikosti. Po provedení výběru souboru se dialogové okno automaticky uzavře a zároveň se v horní části okna zobrazí cesta v adresáři k vybranému souboru. V případě opuštění dialogového okna bez výběru souboru program vypíše chybovou hlášku. 
 
 Pro vizualizaci dat slouží centrální widget hlavního okna, do něhož je umístěno plátno knihovny matplotlib. Na ose \textbf{x} je vynesen čas, na ose \textbf{y} úhel ohybu paprsku ($\theta$) a na ose \textbf{z} intenzita prošlého RTG záření. S grafem je možno podle potřeb uživatele otáčet, přibližovat jej atp., a to pomocí ovládacího panelu v dolní části okna.
 
@@ -377,11 +379,58 @@ Pro vizualizaci dat slouží centrální widget hlavního okna, do něhož je um
 \end{figure}
 
 \subsubsection{Práce s daty, výběr kanálu} \label{sec:channel}
-Po vykreslení dat a jejich vizuálním posouzením je možné v pravé dolní části hlavního okna provést výběr datového kanálu, tedy výřezu dat pro daný úhel $\theta$, který je z pohledu vyhodnocení dat zajímavý. 
+Po vykreslení dat a jejich vizuálním posouzení je možné v pravé dolní části hlavního okna provést výběr kanálu, tedy výřezu dat pro daný úhel $\theta$, který je z pohledu vyhodnocení zajímavý. Stisknutím tlačítka \uv{Next} dojde k potvrzení výběru a zároveň je vyslán příkaz k otevření nové záložky, kde je možné vzniklý jednorozměrný signál dále zpracovat (viz \ref{sec:fcntabs}). Výběr datového kanálu lze provádět opakovaně zadáním nové hodnoty $\theta$ do editovatelného pole.
+
 \subsection{Záložky a funkce} \label{sec:fcntabs}
-V této části bude \ldots .
+Piece of shit: \textcolor{cdorange}{V dalším kroku je vybrané pásmo signálu odpovídající zadanému úhlu $\theta$ vykresleno v nové záložce. Systém okna se záložkami byl zvolen pro větší přehlednost a zároveň umožní zpracování více kanálů najednou. Jednotlivé výřezy je tak možné vzájemně porovnávat jednoduchým přepínáním mezi záložkami. Záložky lze také v rámci lišty libovolně přesouvat potažením myši. Počet otevřených záložek prakticky není omezen, lze jej redukovat uzavřením dané záložky pomocí křížku. Záložku hlavního okna s dvourozměrnou grafikou zavřít nelze.}
+
+\ldots
+
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width=\linewidth]{gui_tab.png}
+    \caption{Hlavní okno se záložkami}
+    \label{fig:gui_tab}
+\end{figure}
 
 \subsubsection{Filtrace signálu}\label{sec:exp_filtrace}
+Zpracování signálu je v rámci programu prováděno číslicovou filtrací. Do programu byly zařazeny čtyři různé číslicové filtry (viz obr. č. \ref{fig:exp_filtry}), z nichž dva byly realizovány pomocí vestavěných funkcí knihovny \textbf{scipy} a dva byly implementovány. Princip fungování těchto filtrů je blíže vysvětlen v kapitolách \ref{sec:filtr1} až \ref{sec:filtr4} této práce.
+
+Prvním z použitých filtrů je tzv. zero-phase filtr, k jehož realizaci byla využita funkce knihovny \textbf{scipy} \texttt{signal.filtfilt()}. Parametry této funkce představují koeficienty přenosové funkce FIR filtru $b$, resp. $a$ a posloupnost filtrovaného signálu. Parametry $a$ a $b$ byly optimalizovány na základě vizuálního posouzení filtrovaného signálu a v rámci programu je nelze uživatelem měnit.
+
+Obdobný přístup byl zvolen i u druhého z použitých filtrů, Savitzky-Golay filtru, jehož parametry byly rovněž optimalizovány a jsou v programu pevně nastaveny. Pro realizaci SG filtru byla použita vestavěná funce knihovny \textbf{scipy} \texttt{signal.savgol}\verb|_|\texttt{filter()}.
+
+
+\begin{figure}[ht!]
+\centering
+\begin{minipage}[b]{0.9\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{zerophase_fig.png}\vspace{0.25cm}
+  \subcaption{zero-phase}
+  \label{fig:zerophase_fig}
+\end{minipage}
+\begin{minipage}[b]{0.9\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{sgf_fig.png}\vspace{0.25cm
+  \subcaption{SGF}
+  \label{fig:sgf_fig}}
+\end{minipage}
+\begin{minipage}[b]{0.9\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{median_fig.png}\vspace{0.25cm
+  \subcaption{median}
+  \label{fig:median_fig}}
+\end{minipage}
+\begin{minipage}[b]{0.9\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{ema_fig.png}\vspace{0.25cm
+  \subcaption{EMA}
+  \label{fig:ema_fig}}
+\end{minipage}\vspace{0.4cm}
+\caption{filtry}
+\label{fig:exp_filtry}
+\end{figure}
+
 
 \subsubsection{Export dat} \label{sec:export}
 \ldots .
@@ -395,6 +444,7 @@ V této části bude \ldots .
 
 % seznam literatury
 \newpage
+
 \bibliography{citace}
 %%
 
