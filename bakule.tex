@@ -1,11 +1,12 @@
 \documentclass[a4paper, 12pt]{article}
 
-% čeština
+% čeština & angličtina
 \usepackage[utf8]{inputenc}
 \usepackage[version=4]{mhchem}
-\usepackage[czech]{babel}
+\usepackage[english,czech]{babel}
 \usepackage{bakalarska_prace}
 \usepackage{url}
+
 %%
 
 % citace
@@ -13,19 +14,23 @@
 
 % kód
 \usepackage{listings}
-\definecolor{codegreen}{rgb}{0,0.6,0}
+\usepackage{minted}
+\definecolor{codegreen}{rgb}{0,0.5,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{darkcyan}{rgb}{0.0, 0.55, 0.55}
 \definecolor{backcolour}{rgb}{0.98,0.98,0.98}
-\definecolor{royalblue}{rgb}{0.0, 0.14, 0.4}
+\definecolor{royalblue(traditional)}{rgb}{0.0, 0.14, 0.4}
+\definecolor{darklavender}{rgb}{0.45, 0.31, 0.59}
 
 %Code listing style named "mystyle"
 \lstdefinestyle{mystyle}{
   backgroundcolor=\color{backcolour},   commentstyle=\color{codegreen},
-  keywordstyle=\color{royalblue},
+  emph={self},
+  emphstyle={\color{darklavender}},
+  keywordstyle=\color{royalblue(traditional)},
   numberstyle=\tiny\color{codegray},
   stringstyle=\color{darkcyan},
-  basicstyle=\footnotesize\ttfamily,
+  basicstyle=\footnotesize\ttfamily\color{black},
   breakatwhitespace=false,         
   breaklines=true,                 
   captionpos=b,                    
@@ -49,9 +54,13 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{color, soul}
-\usepackage{xcolor}
+\usepackage[usenames,dvipsnames]{xcolor}
 \usepackage[most]{tcolorbox}
 \newtcolorbox{highlighted}{colback=yellow!40,coltext=black,breakable}
+
+%\usepackage{tikz}
+\newcommand*{\Icon}{\includegraphics[width=0.5cm, height=0.5cm]{icon.PNG}}%
+
 
 % okraje (v případě potřeby):\usepackage[showframe]{geometry}
 %%
@@ -61,29 +70,45 @@
 \newcommand\todoin[2][]{\todo[inline, caption={2do},#1]{\begin{minipage}{\textwidth-4pt}#2\end{minipage}}}
 \definecolor{lavender}{rgb}{0.96, 0.73, 1.0}
 \definecolor{cdorange}{rgb}{0.93, 0.53, 0.18}
+%
+\newcommand{\cR}{\color{red}}
+\newcommand{\misRef}{{\cR[REF]\,}}
+\newcommand{\cB}{\color{blue}}
 %%
 
 % matika
 \usepackage{amsmath} 
 %%
+\usepackage{pdfpages} 
 
 \begin{document}
-
+\includepdf{vstupni_listy.pdf}
+\includepdf{zadani_1.pdf}
+\includepdf{zadani_2.pdf}
 
 % souhrn
 % (CZ)
-\section*{Souhrn}
-Při reaktivní sintraci dochází působením tlaku a tepla ke spékání práškových kovů za vzniku jejich sloučenin. Pro zkoumání mechanismu a kinetiky tohoto děje se využívá snímání reakční směsi pomocí rentgenové difrakce \textit{in situ}. Z takto získaných dat lze zpětně vizuálním posouzením přibližně identifikovat  moment vzniku jednotlivých intermetalických sloučenin. Cílem této práce bylo vytvořit program s uživatelským rozhraním umožňující efektivnější analýzu krystalografických dat s důrazem na přesnost identifikace vznikajících fází. Vzniklý program je vybaven nástroji pro načítání dat ze souborů, jejich vizualizaci a zpracování signálu. Program rovněž umožňuje zpracovaná data zpětně exportovat do souborů. K tvorbě programu byl využit programovací jazyk Python.
+\begin{abstract}
+Při reaktivní sintraci dochází působením tlaku a tepla ke spékání práškových kovů za vzniku jejich sloučenin. Pro zkoumání mechanismu a kinetiky tohoto děje se využívá snímání reakční směsi pomocí \textit{in situ} rentgenové difrakce. Z takto získaných dat lze zpětně vizuálním posouzením přibližně identifikovat  moment vzniku jednotlivých intermetalických sloučenin. Cílem této práce bylo vytvořit program s uživatelským rozhraním umožňující efektivnější analýzu krystalografických dat s důrazem na přesnost identifikace vznikajících fází. Vzniklý program je vybaven nástroji pro načítání dat ze souborů, jejich vizualizaci a zpracování signálu. Program rovněž umožňuje zpracovaná data zpětně exportovat do souborů. K tvorbě programu byl využit programovací jazyk Python.
+\vskip 0.1 in
+\noindent\textbf{Klíčová slova:} Python, grafické uživatelské rozhraní, PyQt5, zpracování signálu, číslicová filtrace, sintrace, XRD
+\end{abstract}
 
 % (EN)
-\section*{Summary}
+\begin{otherlanguage}{english}
+\begin{abstract}
 During the reactive sintering, powdery metals are sintered at high temperatures and under pressure to form their compounds. To study the mechanism and kinetics of this process, the X-ray diffraction real-time capturing of the reaction mixture is used. From the obtained data, the moment of appearance of each intermetallic compound can be identified. The aim of this work was to create a program with user interface enabling more efficient analysis of crystallographic data with an emphasis on the accuracy of identification of emerging phases. The program is equipped with tools for data retrieval, visualization and signal processing. The program also allows the user to export processed data back to files. The program was created within the Python programming language.
+\vskip 0.1 in
+\noindent\textbf{Keywords:} Python, graphical user interface, PyQt5, signal processing, digital filtering, sintering, XRD
+\end{abstract}
+\end{otherlanguage}
 %%
 \newpage
 
 % poděkování
 \section*{Poděkování}
-případné poděkování. Pokud není, stranu vynechat.
+\vskip 0.5 in
+\ldots
 
 %%
 \newpage
@@ -95,21 +120,23 @@ případné poděkování. Pokud není, stranu vynechat.
 
 % úvod
 \section{Úvod}
-V oblasti výzkumu kovových materiálů jsou kladeny stále větší nároky na jejich vlastnosti. V této souvislosti je snaha získávat slitiny s vylepšenými vlastnostmi, které by vynikaly např. extrémní ohebností, odolností vůči korozi či vysokým teplotám. K tomu se v poslední době hojně využívá metoda práškového slinování kovů, nebo-li reaktivní sintrace, poskytující nejrůznější intermetalické sloučeniny. Při tomto ději však vznikají jak užitečné slitiny požadovaných vlastností, tak i méně kvalitní produkty. Pro maximální výtěžnost je proto nutné sledovat mechanismus vzniku jednotlivých sloučenin, a to např. metodou rentgenové difrakce (XRD) \textit{in situ}, která umožňuje detailně pozorovat vývoj krystalické struktury reakční směsi v reálném čase. Výstupem XRD je závislost intenzity rentgenového paprsku na úhlu jeho ohybu po průchodu materiálem a na čase. Problém nastává při zpracování takto naměřených dat. V současné době probíhá vyhodnocení dat a identifikace intermetalických fází zejména ručně na základě tabelovaných hodnot úhlů ohybu přisouzených jednotlivým sloučeninám.
+V oblasti výzkumu kovových materiálů jsou kladeny stále větší nároky na jejich vlastnosti. V této souvislosti je snaha získávat slitiny s vylepšenými vlastnostmi, které by vynikaly např. nízkou hustotou, vysokou tepelnou stabilitou či výbornou odolností vůči korozi. \cite{NOVAK2009123} Jednou z hojně využívaných metod získávání slitin s vylepšenými vlastnostmi je metoda práškového slinování kovů, nebo-li reaktivní sintrace, poskytující nejrůznější intermetalické sloučeniny. \cite{novak2012pvriprava} Při sintraci však vznikají jak užitečné slitiny požadovaných vlastností, tak i méně kvalitní produkty. Pro maximální výtěžnost je proto nutné sledovat mechanismus vzniku jednotlivých sloučenin, a to např. metodou \textit{in situ} rentgenové difrakce (XRD), která umožňuje detailně pozorovat vývoj krystalické struktury reakční směsi v reálném čase. \cite{NOVAKxrd} \par
 
-S obdobným problémem se při své práci na výzkumu týkajícím se systémů Ti-Al potýká rovněž výzkumná skupina doc. Ing. Pavla Nováka, Ph.D. z Ústavu kovových materiálů a korozního inženýrství Vysoké školy chemicko-technologické v Praze. Vznikl proto požadavek na vytvoření programu s grafickým uživatelským rozhraním, který by proces identifikace urychlil a celkově automatizoval. Za tímto účelem byla navázána meziústavní spolupráce s Ústavem počítačové a řídící techniky téže instituce. Tvorba programu a uživatelského rozhraní pro zpracování krystalografických dat je předmětem této bakalářské práce. K implementaci byl využit programovací jazyk Python a jeho knihovny.
+XRD je v současnosti na Vysoké škole chemicko-technologické v Praze (VŠCHT Praha) využíváno například výzkumnou skupinou doc. Ing. Pavla Nováka, Ph.D. z Ústavu kovových materiálů a korozního inženýrství ke studiu vzniku kompozitních systémů pro použití na pístních kroužcích spalovacích motorů. \cite{UKMKIvscht} Výstupem RTG strukturní analýzy je závislost četnosti odražených rentgenových paprsků na úhlu jejich ohybu po kontaktu s amorfním materiálem a na čase. \cite{XRD} Problém nastává při zpracování takto naměřených dat. V současné době probíhá v laboratoři doc. Nováka vyhodnocení dat a identifikace intermetalických fází zejména ručně na základě tabelovaných hodnot úhlů ohybu přisouzených jednotlivým sloučeninám. Vznikl proto požadavek na vytvoření programu s grafickým uživatelským rozhraním, který by proces identifikace urychlil a celkově automatizoval. Za tímto účelem byla navázána mezi-ústavní spolupráce s Ústavem počítačové a řídící techniky VŠCHT Praha. \par
+
+Tvorba programu a uživatelského rozhraní pro zpracování krystalografických dat je předmětem této bakalářské práce. K implementaci byl využit programovací jazyk Python \cite{pythonorg} a jeho knihovny \textbf{matplotlib} \cite{PltLib}, \textbf{numpy} \cite{NPY}, \textbf{scipy}  \cite{SciOrg} a další. Součástí implementovaného programu je i grafické uživatelské rozhraní vytvořené pomocí knihovny PyQt5 \cite{PyQt} umožňující automatické zpracování dat bez nutné předchozí znalosti programovacího jazyka Python. Na základě testů uživatelské přívětivosti vyvinutého programu lze odhadovat, že doba nutná na zpracování dat z \textit{in situ} prováděné RTG krystalografie je zhruba poloviční oproti stávajícímu stavu.
+
+V první části práce je přiblížen programovací jazyk Python (\ref{sec:python}) a tvorba uživatelského rozhraní v něm (\ref{sec:GUI}). Dále je nastíněna podstata číslicového zpracování signálu (\ref{sec:DSP}), které tvoří hlavní funkční část programu. V praktické části (\ref{sec:prakticka}) je pak popsáno fungování programu a postup tvorby uživatelského rozhraní. V závěru práce jsou zhodnocena úskalí nastalá při tvorbě programu a navržena možná rozšíření práce do budoucna.
+
 %%
-\newpage
 % teoretická část
-\section{Python}
+\section{Python} \label{sec:python}
 V této kapitole bude představen programovací jazyk Python (\ref{sec:history}) a možnosti implementace uživatelského rozhraní v něm (\ref{sec:GUI}).
 \subsection{Stručná historie Pythonu} \label{sec:history}
-V 80. letech minulého století pracovali vývojáři institutu Centrum voor Wiskunde en Informatica (CWI) v Nizozemsku na skriptovacím jazyku ABC.  Ten měl být určen uživatelům z řad veřejnosti bez širších programátorských znalostí. \cite{PythonHist:1} Přes snahu jeho tvůrců se toho ale nepodařilo dosáhnout. Z toho důvodu se Guido van Rossum rozhodl vytvořit nový, uživatelsky přívětivější jazyk, který by odstranil nedostatky jazyka ABC. První verze tohoto jazyka nazvaného Python byla vypuštěna v roce 1994. \cite{PythonHist:2}
-
-
-\noindent Od té doby prošel Python značným vývojem a dočkal se mnoha nových verzí, z nichž zatím poslední (verze 3.7.3) byla zveřejněna k 25. březnu letošního roku (2019). \cite{PythonVersion}
+V 80. letech minulého století pracovali vývojáři institutu Centrum voor Wiskunde en Informatica (CWI) v Nizozemsku na skriptovacím jazyku ABC.  Ten měl být určen uživatelům z řad veřejnosti bez širších programátorských znalostí. \cite{PythonHist:1} Přes snahu jeho tvůrců se toho ale nepodařilo dosáhnout. Z toho důvodu se Guido van Rossum rozhodl vytvořit nový, uživatelsky přívětivější jazyk, který by odstranil nedostatky jazyka ABC. První verze tohoto jazyka nazvaného Python byla vypuštěna v roce 1994. \cite{PythonHist:2} Od té doby prošel Python značným vývojem a dočkal se mnoha nových verzí, z nichž zatím poslední (verze 3.7.3) byla zveřejněna k 25. březnu letošního roku (2019). \cite{PythonVersion}
 
 \subsection{Specifika programování v Pythonu} \label{sec:specifika}
+
 Python je multimodální skriptovací jazyk umožňující programování v rámci jak objektově orientovaného, tak procedurálního paradigmatu. \cite{Python3Summerfield:1}
 Jak vyplývá ze statistik dvou nezávislých ukazatelů popularity programovacích jazyků, TIOBE\footnote{TIOBE Programming Community index je ukazatel popularity programovacích jazyků na základě počtu aktivních uživatelů, zdrojem informací jsou výsledky vyhledávání klíčových slov souvisejících s daným jazykem na nejrůznějších serverech, jako Google, Yahoo! nebo Wikipedia. \cite{tiobe}} a PYPL\footnote{PYPL PopularitY of Programming Language Index je ukazatelem popularity programovacích jazyků vycházející z dat služby Google Trends, která shromažďuje a vyhodnocuje údaje o vyhledávání od společnosti Google. \cite{pypl}}, Python se řadí mezi dlouhodobě nejoblíbenější programovací jazyky (viz obr. č. \ref{fig:tiobe} \cite{tiobe}).
 
@@ -120,17 +147,14 @@ Jak vyplývá ze statistik dvou nezávislých ukazatelů popularity programovac�
     \label{fig:tiobe}
 \end{figure}
 
-Důvodů k jeho oblibě je hned z několik. Hlavním z nich je srozumitelnost produkovaného kódu a tudíž jeho snadná osvojitelnost i pro uživatele bez větších zkušeností s programováním. S tím souvisí široká uživatelská komunita, která je, vedle propracované dokumentace, důležitým nástrojem při řešení problémů.  Jedná se rovněž o multiplatformní jazyk, tj. programy v něm napsané lze bez větších problémů spustit prakticky v libovolném operačním systému, ať už Windows nebo v systémech na bázi Unix (Linux, Mac OS X apod.). V neposlední řadě je značnou výhodou Pythonu jeho rozsáhlá standardní knihovna, která umožňuje celou řadu úkonů. Zároveň je ale pro specializované operace k dispozici velké množství doplňkových knihoven třetích stran.
-
-
-\noindent Jak již bylo řečeno, Python je především objektově orientovaným jazykem. Podstatu objektově orientovaného přístupu tvoří tzv. objekty. Objekty jsou seskupení dat s určitými vlastnostmi a funkcionalitami pracující na principu černé skříňky, tj. vykonávají činnosti a komunikaci s okolím bez nutnosti znát jejich vnitřní podstatu. Nadřazeným prvkem objektu je datový typ, neboli třída. Ten sdružuje samotné objekty a také operace, které je možné s nimi provádět. Příkladem může být např. třída \texttt{int} a do ní náležící objekt, číslo \texttt{3}. Třída \texttt{int} tedy pracuje s celými čísly (v počítači ukládána s konečným počtem desetinných míst, z angl.\textit{integers}), s nimiž je možné provádět matematické operace (sčítání, dělení, násobení\ldots), zápis do vektorů a matic apod.
-
-
+Důvodů k jeho oblibě je hned z několik. Hlavním z nich je srozumitelnost produkovaného kódu a tudíž jeho snadná osvojitelnost i pro uživatele bez větších zkušeností s programováním. S tím souvisí široká uživatelská komunita, která je, vedle propracované dokumentace, důležitým nástrojem při řešení problémů. Jedná se rovněž o multiplatformní jazyk, tj. programy v něm napsané lze bez větších problémů spustit prakticky v libovolném operačním systému, ať už Windows nebo v systémech na bázi Unix (Linux, Mac OS X apod.). V neposlední řadě je značnou výhodou Pythonu jeho rozsáhlá standardní knihovna, která umožňuje celou řadu úkonů. Zároveň je ale pro specializované operace k dispozici velké množství doplňkových knihoven třetích stran.
+\vskip 0.1in
+\noindent Jak již bylo řečeno, Python je především objektově orientovaným jazykem. Podstatu objektově orientovaného přístupu tvoří tzv. objekty. Objekty jsou seskupení dat s určitými vlastnostmi a funkcionalitami pracující na principu černé skříňky, tj. vykonávají činnosti a komunikaci s okolím bez nutnosti znát jejich vnitřní podstatu. Nadřazeným prvkem objektu je datový typ, neboli třída. Ten sdružuje samotné objekty a také operace, které je možné s nimi provádět. Příkladem může být např. třída \texttt{int} a do ní náležící objekt, číslo \texttt{3}. Třída \texttt{int} tedy pracuje s celými čísly (v počítači ukládána s konečným počtem desetinných míst, z angl.\textit{integers}), s nimiž je možné provádět matematické operace (sčítání, dělení, násobení\ldots), zápis do vektorů a matic apod. \par
 Výhoda použití objektově-orientovaného přístupu spočívá v tzv. dědičnosti, díky níž objekty náležící do určité podtřídy odvozené od třídy hlavní přebírají (dědí) její vlastnosti. Tím dochází k úspoře vyprodukovaného kódu, neboť tyto objekty z podtříd není nutné znovu specifikovat. Vzniklý kód je tak přehlednější a celkově úspornější. Toho lze využít např. při tvorbě uživatelských rozhraní, kdy jsou kladeny nároky především na velikost skriptu.
 
 \subsection{Grafické uživatelské rozhraní} \label{sec:GUI}
 Grafické uživatelské rozhraní, zkráceně GUI (z angl. \textit{Graphical User Interface}), je nástroj, s jehož pomocí je realizována oboustranná interakce mezi programem a uživatelem. Směrem dovnitř přicházejí vstupy zadané uživatelem, na než následně reagují odpovídající výstupy programu. Vstupy jsou uživatelem vysílány pomocí interaktivních ovládacích prvků, např. ve formě tlačítek, posuvníků, rolovacích seznamů apod. Výstupy programu se pak mohou projevovat rovněž nejrůznější způsoby, ať už jako procesy na pozadí nebo přímo akcemi v rámci grafických oken programu. Vnitřní podstatu fungování GUI si pak lze představit jako jakousi \uv{nekonečnou} smyčku událostí, která je vyvolána spuštěním programu a vytvořením hlavního okna s jeho ovládacími prvky. Ta následně čeká na vstup zvenčí. Pakliže takový vstup nepřichází, setrvává ve vyčkávací pozici. Jakmile jej ale dostane, postupuje dle předepsaného algoritmu až na konec, poté se opět vrátí do vyčkávací pozice. Cyklus se opakuje do té doby, než uživatel vyšle signál k ukončení programu. Princip fungování programu s uživatelským rozhraním je schematicky znázorněn na obr. č. \ref{fig:Gui} (převzato z \cite{Python3Summerfield:2} a upraveno).
-\clearpage
+
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=0.8\linewidth,height=14.5cm]{gui_princip.png}\vspace{0.25cm}
@@ -176,7 +200,7 @@ Pro srovnání obou frameworků byla v každém z nich generována  jednoduchá 
 \end{figure}
 
 \newpage
-\section{Zpracování signálu}
+\section{Zpracování signálu} \label{sec:DSP}
 Tato kapitola se zaměřuje na vnitřní podstatu programu pro zpracování krystalografických dat, tj. na číslicové zpracování signálu, od stručného nastínění teorie signálů (sekce \ref{sec:signal}), přes problematiku jejich zpracování až ke konkrétním příkladům číslicových filtrů implementovaných v rámci programu (sekce \ref{sec:filtr1} až \ref{sec:filtr4}).
 \subsection{Signály} \label{sec:signal}
 Signály jsou nositeli informace o podstatě svého zdroje, která je reprezentována okamžitou změnou jedné či více fyzikálních veličin v čase. \cite{uhlíř&sovka2002} Podle povahy signálů je lze dělit např. na spojité a diskrétní. Spojité signály jsou definované pro nekonečně mnoho hodnot nezávisle proměnné veličiny, u diskrétních signálů nezávisle proměnná nabývá pouze hodnot celočíselných. Signály mohou být diskrétní i pro hodnoty závisle proměnné (např. v amplitudě), v takovém případě je nazýváme kvantovanými, popř. číslicovými, jsou-li diskrétní jak v čase, tak v amplitudě (viz obr. č. \ref{fig:signal}).
@@ -210,7 +234,9 @@ Signály jsou nositeli informace o podstatě svého zdroje, která je reprezento
 Dalším kritériem pro klasifikaci signálů je jejich chování v čase. To je dáno okolnostmi jejich vzniku, fyzikální podstatou a dalšími faktory. V případě, že lze předvídat časový průběh signálu, nazýváme jej signálem deterministickým. V opačném případě, tedy pokud má chování signálu náhodnou povahu, jde o signál stochastický.
 Běžné signály jsou obvykle analogového charakteru, tj. spojité v čase i amplitudě. Pro možnost jejich dalšího zpracování je proto potřeba signály při jejich získávání souběžně diskretizovat - sledovaná veličina je snímána pouze v určitých časových okamžicích (vzorkování) a zároveň jsou pomocí vestavěných A/D převodníků kvantovány. Výsledný signál je tak plně digitální, tedy diskrétní v čase i amplitudě. Takto upravený signál je možné podrobit číslicovému zpracování.
 Číslicové zpracování se provádí z důvodu potlačení, příp. zvýraznění určitých složek signálu. Složky, které jsou z pohledu sledovaného děje rušivé se nazývají šum a do signálu se dostávají už ve chvíli jeho vzniku, buď z vnitřního prostředí zdroje nebo vlivem okolí. Mezi základní nástroje signálového zpracování patří
-analogová a číslicová filtrace, časová, spektrální nebo časově-frekvenční analýza a další. Vzhledem ke komplexnosti problematiky zpracování signálu se tato práce zaměří pouze na jeden z jejích nástrojů, a to na číslicovou filtraci.
+analogová a číslicová filtrace, časová, spektrální nebo časově-frekvenční analýza a další.
+
+\noindent Vzhledem ke komplexnosti problematiky zpracování signálu se tato práce zaměří pouze na jeden z jejích nástrojů, a to na číslicovou filtraci.
 
 \subsection{Číslicová filtrace signálu} \label{sec:filtry)}
 Filtrace signálu je proces zprostředkovávaný systémem, číslicovým filtrem, při němž dochází ke změně frekvenčního spektra vstupního signálu za účelem zvýraznění, resp. potlačení některých jeho složek. \cite{filtracedef}
@@ -255,13 +281,10 @@ Podle účelu lze filtry rozdělit na základě jejich frekvenční selektivity 
 \label{fig:filtryfrekvs}
 \end{figure}
 
-Chování reálných filtrů 
-% v praxi chování filtrů neideální
-% úspěšnost filtrace dána zašuměností signálu (SNR)
+\textcolor{cdorange}{Chování reálných filtrů se od chování filtrů ideálních liší, a to zejména v rychlosti přechodu do nového ustáleného stavu, který je u reálný filtrů spíše pozvolný než skokový. To, jak moc se filtr blíží svým chováním ideálnímu filtru udává kvalitu jím prováděné filtrace.}
 
+Dále budou blíže popsány konkrétní filtry, které byly zařazeny do programu pro zpracování krystalografických dat. Všechny tyto filtry jsou koncipovány jako low-pass filtry, jsou tedy určeny k eliminaci vysokofrekvenčního šumu.
 
-\noindent Dále budou blíže popsány konkrétní filtry, které byly zařazeny do programu pro zpracování krystalografických dat. Všechny tyto filtry jsou koncipovány jako low-pass filtry, jsou tedy určeny k eliminaci vysokofrekvenčního šumu.
-\newpage
 \subsubsection{Filtr s nulovým fázovým posunem}
 \label{sec:filtr1}
 Prvním z číslicových filtrů využitých v rámci programu je filtr s nulovým fázovým posunem. K implementaci tohoto druhu filtrace jsou využívány jak filtry FIR typu, tak IIR typu. Ty jsou výpočetně méně náročné, zároveň ale vykazují fázové zkreslení způsobené nelinearitou frekvenční charakteristiky filtru, kdy dochází k nestejnému zpožďování různých složek signálu. U FIR filtrů k tomuto jevu také dochází, zkreslení je však vlivem lineární frekvenční charakteristiky konstantní a nedochází proto k deformaci časové řady. Efekt fázového zkreslení lze částečně potlačit právě zero-phase filtrací. 
@@ -273,7 +296,6 @@ Pro docílení nulového fázového posunu se provádí filtrace v dopředném a
   \caption{Princip filtrace s nulovým fázovým posunem}
   \label{fig:zerophase}
 \end{figure}
-
 
 \subsubsection{Savitzky-Golay filtr}
 \label{sec:filtr2}
@@ -292,7 +314,8 @@ Z obr. č. \ref{fig:theo_savitzkygol} je patrné, že při stejné délce okna p
  \centering
  \label{fig:theo_savitzkygol}
 \end{figure}
-%\textcolor{cdorange}{Použití a návrh SG filtru obecně silně závisí na povaze signálu a zároveň na zkušenostech uživatele, který by měl znát přibližné chování systému, a to v tom smyslu, aby při aplikaci filtru nedošlo k významnému znehodnocení přenášené informace}.
+
+textcolor{cdorange}{Použití a návrh SG filtru obecně silně závisí na povaze signálu a zároveň na zkušenostech uživatele, který by měl znát přibližné chování systému, a to v tom smyslu, aby při aplikaci filtru nedošlo k významnému znehodnocení přenášené informace}.
 \noindent Filtrace SG filtrem probíhá, na rozdíl např. od klasických FIR/IIR filtrů, v časové oblasti.
 
 \subsubsection{Mediánový filtr}
@@ -342,20 +365,21 @@ Z této rovnice vyplývá, že pro rostoucí hodnotu vyhlazovacího parametru se
 \end{equation}
 Závislost váhy hodnoty na její vzdálenosti od současné hodnoty je graficky znázorněna na obr. č. \ref{fig:EMAexp}. Z povahy křivky je patrné, že se skutečně jedná o exponenciálu, navíc s klesající tendencí, z čehož vyplývá, že skutečně čím vzdálenější je hodnota od hodnoty aktuální, tím menší má význam pro výpočet odezvy filtru.
 
+
 Přidáním dalších vyhlazovacích parametrů lze exponenciální vyhlazování provádět vícenásobně. Dvojité vyhlazování spočívá v zařazení trend vyhlazujícího parametru $\beta$. Trojnásobné vyhlazovaní pak zohledňuje i sezónnost sledovaného děje vnesením třetího parametru $\gamma$. Tyto pokročilé metody ale nejsou předmětem této práce, ta se dále zaměřuje pouze na jednoduché exponenciální vyhlazování.
 
 \begin{figure}[hbt!]
     \centering
-    \includegraphics[width=0.9\linewidth]{EMAexp1.png}
-    \caption{Křivka závislosti váhy hodnoty na její vzdálenosti od hodnoty aktuální}
+    \includegraphics[width=\linewidth,height=8cm]{EMAexp1.png}
+    \caption{Křivka závislosti váhy hodnoty (1-$\alpha$) na její vzdálenosti (\textit{k}) od aktuální hodnoty (\textit{$x_i$})}
     \label{fig:EMAexp}
 \end{figure}
 
 %%
 \clearpage
 % praktická část
-\section{Tvorba uživatelského rozhraní a zpracování krystalografických dat}
-Předmětem praktické části této práce byly dva hlavní úkoly, a to implementovat algoritmy pro zpracování dat získaných rentgenovou krystalografií a následně naprogramovat v jazyce Python uživatelské rozhraní umožnující snadnou práci s tímto programem. V následujícím textu bude popsán postup tvorby programu chronologicky tak, jak se předpokládá, že budou jednotlivé prvky využity uživatelem. Tedy od spuštění programu (sekce \ref{sec:mainwin}) až po export zpracovaného signálu do souborů třetích stran (sekce \ref{sec:export}). K tvorbě programu byl použit programovací jazyk Python ve verzi 3.6.6 a některé jeho knihovny, jako např. \textbf{matplotlib}, \textbf{scipy}, \textbf{PySide}, \textbf{numpy} a další. K implementaci uživatelského prostředí pak byla použita knihovna GUI PyQt5 (verze 5.11.3). Zdrojový kód aplikace je přiložen k této práci na CD.
+\section{Tvorba uživatelského rozhraní a zpracování krystalografických dat} \label{sec:prakticka}
+Předmětem praktické části této práce byly dva hlavní úkoly, a to implementovat algoritmy pro zpracování dat získaných rentgenovou krystalografií a následně naprogramovat v jazyce Python uživatelské rozhraní umožnující snadnou práci s tímto programem. V následujícím textu bude popsán postup tvorby programu chronologicky tak, jak se předpokládá, že budou jednotlivé prvky využity uživatelem. Tedy od spuštění programu (sekce \ref{sec:mainwin}) až po export zpracovaného signálu do souborů třetích stran (sekce \ref{sec:export}). K tvorbě programu byl použit programovací jazyk Python ve verzi 3.6.6 a některé jeho knihovny, jako např. \textbf{matplotlib}, \textbf{scipy}, \textbf{PySide}, \textbf{numpy} a další. K implementaci uživatelského prostředí pak byla použita knihovna GUI PyQt5 (verze 5.11.3). \textcolor{cdorange}{Zdrojový kód aplikace je přiložen k této práci na CD}.
 
 \subsection{Hlavní okno a funkce} \label{sec:mainwin}
 V této kapitole bude rozebrán ústřední funkční prvek aplikace pro zpracování krystalografických dat, hlavní okno a jeho součásti (viz obr. č. \ref{fig:mainWin}).
@@ -367,7 +391,7 @@ Proces zpracování krystalografických dat začíná načtením naměřených d
 \begin{center}
  \texttt{PyQt5.QtWidgets.QFileDialog.getOpenFileName()}.   
 \end{center}
-\noindent Podporovaným datovým typem je textový soubor s tabulátorovým oddělovačem (.dat, .csv apod.). Data jsou ze souboru načtena do matice odpovídající velikosti. Po provedení výběru souboru se dialogové okno automaticky uzavře a zároveň se v horní části okna zobrazí cesta v adresáři k vybranému souboru. V případě opuštění dialogového okna bez výběru souboru program vypíše chybovou hlášku. 
+\noindent Podporovaným datovým typem je textový soubor s tabulátorovým oddělovačem (.dat). Data jsou ze souboru načtena do matice odpovídající velikosti. Po provedení výběru souboru se dialogové okno automaticky uzavře a zároveň se v horní části okna zobrazí cesta v adresáři k vybranému souboru. V případě opuštění dialogového okna bez výběru souboru program vypíše chybovou hlášku. 
 
 Pro vizualizaci dat slouží centrální widget hlavního okna, do něhož je umístěno plátno knihovny matplotlib. Na ose \textbf{x} je vynesen čas, na ose \textbf{y} úhel ohybu paprsku ($\theta$) a na ose \textbf{z} intenzita prošlého RTG záření. S grafem je možno podle potřeb uživatele otáčet, přibližovat jej atp., a to pomocí ovládacího panelu v dolní části okna.
 
@@ -382,10 +406,11 @@ Pro vizualizaci dat slouží centrální widget hlavního okna, do něhož je um
 Po vykreslení dat a jejich vizuálním posouzení je možné v pravé dolní části hlavního okna provést výběr kanálu, tedy výřezu dat pro daný úhel $\theta$, který je z pohledu vyhodnocení zajímavý. Stisknutím tlačítka \uv{Next} dojde k potvrzení výběru a zároveň je vyslán příkaz k otevření nové záložky, kde je možné vzniklý jednorozměrný signál dále zpracovat (viz \ref{sec:fcntabs}). Výběr datového kanálu lze provádět opakovaně zadáním nové hodnoty $\theta$ do editovatelného pole.
 
 \subsection{Záložky a funkce} \label{sec:fcntabs}
-Piece of shit: \textcolor{cdorange}{V dalším kroku je vybrané pásmo signálu odpovídající zadanému úhlu $\theta$ vykresleno v nové záložce. Systém okna se záložkami byl zvolen pro větší přehlednost a zároveň umožní zpracování více kanálů najednou. Jednotlivé výřezy je tak možné vzájemně porovnávat jednoduchým přepínáním mezi záložkami. Záložky lze také v rámci lišty libovolně přesouvat potažením myši. Počet otevřených záložek prakticky není omezen, lze jej redukovat uzavřením dané záložky pomocí křížku. Záložku hlavního okna s dvourozměrnou grafikou zavřít nelze.}
 
+Piece of shit:\textcolor{cdorange}{V dalším kroku je vybrané pásmo signálu odpovídající zadanému úhlu $\theta$ vykresleno v nové záložce. Systém okna se záložkami byl zvolen pro větší přehlednost a zároveň umožní zpracování více kanálů najednou. Jednotlivé výřezy je tak možné vzájemně porovnávat jednoduchým přepínáním mezi záložkami. Záložky lze také v rámci lišty libovolně přesouvat potažením myši. Počet otevřených záložek prakticky není omezen, lze jej redukovat uzavřením dané záložky pomocí křížku. Záložku hlavního okna s dvourozměrnou grafikou zavřít nelze.}
+\vskip 0.3in
 \ldots
-
+\vskip 0.3in
 \begin{figure}[hbt!]
     \centering
     \includegraphics[width=\linewidth]{gui_tab.png}
@@ -394,49 +419,86 @@ Piece of shit: \textcolor{cdorange}{V dalším kroku je vybrané pásmo signálu
 \end{figure}
 
 \subsubsection{Filtrace signálu}\label{sec:exp_filtrace}
-Zpracování signálu je v rámci programu prováděno číslicovou filtrací. Do programu byly zařazeny čtyři různé číslicové filtry (viz obr. č. \ref{fig:exp_filtry}), z nichž dva byly realizovány pomocí vestavěných funkcí knihovny \textbf{scipy} a dva byly implementovány. Princip fungování těchto filtrů je blíže vysvětlen v kapitolách \ref{sec:filtr1} až \ref{sec:filtr4} této práce.
+Zpracování signálu je v rámci programu prováděno číslicovou filtrací. Výběr požadovaného filtru se provede v sekci filtrace stiskem příslušného zaškrtávacího tlačítka označeného názvem filtru.
 
-Prvním z použitých filtrů je tzv. zero-phase filtr, k jehož realizaci byla využita funkce knihovny \textbf{scipy} \texttt{signal.filtfilt()}. Parametry této funkce představují koeficienty přenosové funkce FIR filtru $b$, resp. $a$ a posloupnost filtrovaného signálu. Parametry $a$ a $b$ byly optimalizovány na základě vizuálního posouzení filtrovaného signálu a v rámci programu je nelze uživatelem měnit.
+\noindent Do programu byly zařazeny celkem čtyři různé číslicové filtry (viz obr. č. \ref{fig:exp_filtry}), z nichž dva byly realizovány pomocí vestavěných funkcí knihovny \textbf{scipy} a dva byly implementovány. Princip jejich fungování je blíže popsán v kapitolách \ref{sec:filtr1} až \ref{sec:filtr4} této práce.
+\vskip 0.1in
+\noindent Prvním z použitých filtrů je tzv. zero-phase filtr, k jehož realizaci byla využita funkce knihovny \textbf{scipy} \texttt{signal.filtfilt()}. Parametry této funkce představují koeficienty přenosové funkce FIR filtru $b$, resp. $a$ a posloupnost filtrovaného signálu. Parametry $a$ a $b$ byly optimalizovány na základě vizuálního posouzení filtrovaného signálu a v rámci programu je nelze uživatelem měnit.
 
-Obdobný přístup byl zvolen i u druhého z použitých filtrů, Savitzky-Golay filtru, jehož parametry byly rovněž optimalizovány a jsou v programu pevně nastaveny. Pro realizaci SG filtru byla použita vestavěná funce knihovny \textbf{scipy} \texttt{signal.savgol}\verb|_|\texttt{filter()}.
+Obdobný přístup byl zvolen i u druhého z použitých filtrů, Savitzky-Golay filtru, jehož parametry byly rovněž optimalizovány a jsou v programu pevně nastaveny. Pro realizaci SG filtru byla použita vestavěná funce knihovny \textbf{scipy} \texttt{signal.savgol}\verb|_|\texttt{filter()}, jejímiž parametry jsou velikost okna filtrovaného signálu a stupeň regresního polynomu.
 
+Třetím zařazeným filtrem je filtr mediánový, který byl v rámci programu implementován. K implementaci MF byl použit \textbf{\texttt{\textcolor{royalblue(traditional)}{for}}} cyklus a výpočet odezvy v krajních bodech byl ošetřen větvením. Chybějící hodnoty okna jsou nahrazovány sousedními hodnotami \textit{i}-tého bodu. Výpočet samotného mediánu je pak prováděn pomocí vestavěné funkce knihovny \textbf{numpy} \texttt{np.median()}. Velikost okna filtru je možné regulovat prostřednictvím posuvníku náležícího danému filtru. 
+\vskip 0.2in
+\begin{lstlisting}[language=Python,numbers=none,frame=single]
+# s ... cas
+# r ... posloupnost vstupniho signalu
 
-\begin{figure}[ht!]
-\centering
-\begin{minipage}[b]{0.9\linewidth}
-  \centering
-  \includegraphics[width=\linewidth]{zerophase_fig.png}\vspace{0.25cm}
-  \subcaption{zero-phase}
-  \label{fig:zerophase_fig}
-\end{minipage}
-\begin{minipage}[b]{0.9\linewidth}
-  \centering
-  \includegraphics[width=\linewidth]{sgf_fig.png}\vspace{0.25cm
-  \subcaption{SGF}
-  \label{fig:sgf_fig}}
-\end{minipage}
-\begin{minipage}[b]{0.9\linewidth}
-  \centering
-  \includegraphics[width=\linewidth]{median_fig.png}\vspace{0.25cm
-  \subcaption{median}
-  \label{fig:median_fig}}
-\end{minipage}
-\begin{minipage}[b]{0.9\linewidth}
-  \centering
-  \includegraphics[width=\linewidth]{ema_fig.png}\vspace{0.25cm
-  \subcaption{EMA}
-  \label{fig:ema_fig}}
-\end{minipage}\vspace{0.4cm}
-\caption{filtry}
-\label{fig:exp_filtry}
-\end{figure}
+mf = np.zeros(len(s))
+for i in range(len(s)):
+    k = (win - 1) // 2
+    q = r[i + 1:((i + 1) + k)]
+    n = r[(i - k):i]
+    u = r[i + 1:i + (k - i) + 1]
+    # levy okraj datoveho souboru
+    if i < k:
+        a = np.concatenate((u[::-1], r[:i + 1], q), axis=None)
+        mf[i] = np.median(a)
+    # pravy okraj datoveho souboru
+    elif (i + ((win - 1) // 2)) > (len(s) - 1):
+        p = r[i - k:i - (len(s) - 1 - i)]
+        b = np.concatenate((n, r[i:], p[::-1]), axis=None)
+        mf[i] = np.median(b)
+    # stred datoveho souboru
+    else:
+        c = r[i - ((win - 1) // 2):(i + ((win + 1) // 2))]
+        mf[i] = np.median(c)
+\end{lstlisting}
+\vskip 0.2in
+Implementován byl i poslední z filtrů, exponenciální vyhlazovací filtr (EMA), a to dle definice (rovnice \ref{eq:EMA}). Parametrem EMA je vyhlazovací parametr $\alpha$, který lze, podobně jako u MF, nastavit uživatelem pomocí posuvníku. \par
+Vzhledem k faktu, že parametr $\alpha$ nabývá hodnot mezi 0 a 1, a zároveň s rostoucí hodnotou $\alpha$ klesá míra vyhlazování, bylo potřeba upravit nastavení posuvníku. A to tak, aby hodnota nastavená na posuvníku zcela vlevo odpovídala nejnižší míře vyhlazení a naopak hodnota zcela vpravo nejvyšší míře vyhlazení. Hodnoty nastavené na posuvníku tak oproti výchozímu nastavení klesají zleva doprava. Z pohledu uživatele je však toto nastavení logičtější.
 
+\vskip 0.2in
+\begin{lstlisting}[language=Python,numbers=none,frame=single]
+# r ... posloupnost vstupniho signalu
+# alpha ... vyhlazovaci parametr
+# aux ... vystupni posloupnost
+
+aux = np.zeros(r.shape)
+
+for idx, a in np.ndenumerate(r):
+    if idx[0] == 0:
+        aux[idx[0]] = a  # pocatecni podminka
+    else:
+        aux[idx[0]] = alpha * a + (1 - alpha) * aux[idx[0] - 1]
+\end{lstlisting}
+\vskip 0.2in
 
 \subsubsection{Export dat} \label{sec:export}
-\ldots .
+Poslední fází zpracování krystalografických dat je uložení těchto dat do souboru přístupného i po opuštění programu. Program nabízí dvě možnosti exportu zpracovaných dat, a to buď ve formě prostého textu nebo ve formě grafiky.
+Stisknutím tlačítka pro uložení (\uv{Export data} - viz obr. č. \ref{fig:gui_tab}) se otevře systémové dialogové okno realizované vestavěnou funkcí knihovny PyQt5:
+\begin{center}
+ \texttt{PyQt5.QtWidgets.QFileDialog.getSaveFileName()},   
+\end{center}
+jejímž výstupem je vybraná cesta v adresáři a zadaný název novému souboru. Cesta slouží jako vstupní argument další vestavěné funkce, \texttt{np.savetxt()} knihovny \textbf{numpy}, která data uloží do textového souboru s čárkovým oddělovačem. S takto uloženými daty je možné dále pracovat např. v tabulkovém procesoru MS Excel.
+
+Při ukládání grafické podoby zpracovaných dat se, obdobně jako v předcházejícím případě, po stisku tlačítka \uv{Save chart} otevře systémové dialogové okno. V tomto případě je kromě zadané cesty v adresáři argumentem ukládající funkce i požadovaná koncovka nového souboru. Podporovanými datovými typy jsou *.png (\textit{Portable Network Graphics}), *.jpg nebo *.svg (\textit{Scalable Vector Graphics}). Obdobnou funkci jako tlačítko \uv{Save chart} má ikona \hspace{0.09cm}\Icon\hspace{0.09cm} na panelu nástrojů v dolní části okna, která však umožňuje ukládat grafy pouze ve formátu *.png.
 
 \newpage
+
 \section{Výsledky a diskuse} \label{sec:diskuze}
+V první fázi tvorby programu byla řešena otázka volby knihovny GUI, ve které bude rozhraní programu implementováno. Vzhledem ke komplexnosti úlohy byla nakonec vybrána knihovna GUI PyQt5, která oproti standardní knihovně Tk nabízí širší možnosti dalšího rozvoje programu \ldots
+\vskip 0.5in
+
+Testování chodu programu bylo prováděno na souboru testovacích dat\footnote{Soubor \uv{\texttt{testovaci.dat}} je spolu se zdrojovým kódem programu přiložen k této práci na CD.} o rozměrech 15853 řádků a 207 sloupců (odpovídá velikosti 34.4 MB)
+
+\vskip 0.5in
+\begin{figure}[hbt!]
+ \centering
+ \includegraphics[width=\linewidth,height=0.65\linewidth]{exp_figures.png}
+ \caption{Ukázka výstupů filtrace v rámci programu: kanál \textbf{79}}
+ \label{fig:exp_filtry}
+\end{figure}
+
 
 \newpage
 \section{Závěr}
@@ -449,6 +511,7 @@ Obdobný přístup byl zvolen i u druhého z použitých filtrů, Savitzky-Golay
 %%
 
 % seznam obrázků
+\newpage
 \listoffigures
 %%
 
@@ -481,7 +544,8 @@ root = Tk()
 my_gui = MyFirstGUI(root)
 root.mainloop()
 \end{lstlisting}
-\subsection{Miniaplikace \texttt{Hello world!} vytvořená v \texttt{PyQt5}}
+\newpage
+\subsection{Miniaplikace \texttt{Hello world!} vytvořená v PyQt5}
 \begin{lstlisting}[language=Python]
 import sys
 from PyQt5 import QtCore, QtWidgets
@@ -521,7 +585,5 @@ if __name__ == "__main__":
     sys.exit( app.exec_() )
 \end{lstlisting}
 %
-\section{something else}
-\label{PrilohaB}
 
 \end{document}
