@@ -281,7 +281,6 @@ Podle účelu lze filtry rozdělit na základě jejich frekvenční selektivity 
 \label{fig:filtryfrekvs}
 \end{figure}
 
-\textcolor{cdorange}{Chování reálných filtrů se od chování filtrů ideálních liší, a to zejména v rychlosti přechodu do nového ustáleného stavu, který je u reálný filtrů spíše pozvolný než skokový. To, jak moc se filtr blíží svým chováním ideálnímu filtru udává kvalitu jím prováděné filtrace.}
 
 Dále budou blíže popsány konkrétní filtry, které byly zařazeny do programu pro zpracování krystalografických dat. Všechny tyto filtry jsou koncipovány jako low-pass filtry, jsou tedy určeny k eliminaci vysokofrekvenčního šumu.
 
@@ -299,7 +298,7 @@ Pro docílení nulového fázového posunu se provádí filtrace v dopředném a
 
 \subsubsection{Savitzky-Golay filtr}
 \label{sec:filtr2}
-\textcolor{cdorange}{Dalším z typů filtrů využitých v rámci programu je Savitzky-Golay filtr (SG filtr).} Jedná se o systém ze skupiny polynomiálních vyhlazovacích filtrů pojmenovaných po analytickém chemikovi Abrahamu Savitzkym a  matematiku Marceli J. E. Golayovi. \cite{SGF} Ti jsou považování za první, kteří navrhli využití tohoto typu systému ke zpracování experimentálních dat. V této oblasti také nalézá svoje největší využití, zejména právě v analytické chemii. Princip Savitzky-Golay filtrů spočívá v proložení podsouboru experimentálních dat polynomem \textit{n}-tého stupně ve smyslu metody nejmenších čtverců a v následném nahrazení \textit{i}-té hodnoty souboru hodnotou daného polynomu. Filtr tedy jinými slovy provádí lokální polynomiální regresi. Vzhledem k symetrii je nutné, aby daný výřez dat (okno) obsahoval lichý počet hodnot.
+Dalším z typů filtrů využitých v rámci programu je Savitzky-Golay filtr (SG filtr). Jedná se o systém ze skupiny polynomiálních vyhlazovacích filtrů pojmenovaných po analytickém chemikovi Abrahamu Savitzkym a  matematiku Marceli J. E. Golayovi. \cite{SGF} Ti jsou považování za první, kteří navrhli využití tohoto typu systému ke zpracování experimentálních dat. V této oblasti také nalézá svoje největší využití, zejména právě v analytické chemii. Princip Savitzky-Golay filtrů spočívá v proložení podsouboru experimentálních dat polynomem \textit{n}-tého stupně ve smyslu metody nejmenších čtverců a v následném nahrazení \textit{i}-té hodnoty souboru hodnotou daného polynomu. Filtr tedy jinými slovy provádí lokální polynomiální regresi. Vzhledem k symetrii je nutné, aby daný výřez dat (okno) obsahoval lichý počet hodnot.
 Filtr lze na signál aplikovat podle rovnice \ref{eq:savgol}.
 \begin{equation}
      Y_{j} = \sum_{i=\frac{1-m}{2}}^{\frac{m-1}{2}} C_{i}\ y_{j+i},\qquad \frac{m-1}{2} \leq j \leq n-\frac{m-1}{2}
@@ -315,7 +314,8 @@ Z obr. č. \ref{fig:theo_savitzkygol} je patrné, že při stejné délce okna p
  \label{fig:theo_savitzkygol}
 \end{figure}
 
-textcolor{cdorange}{Použití a návrh SG filtru obecně silně závisí na povaze signálu a zároveň na zkušenostech uživatele, který by měl znát přibližné chování systému, a to v tom smyslu, aby při aplikaci filtru nedošlo k významnému znehodnocení přenášené informace}.
+\noindent Použití a návrh SG filtru tedy obecně silně závisí na povaze signálu a zároveň na zkušenostech uživatele, který by měl znát přibližné chování systému, a to v tom smyslu, aby při aplikaci filtru nedošlo k významnému znehodnocení přenášené informace.
+\vskip 0.1in
 \noindent Filtrace SG filtrem probíhá, na rozdíl např. od klasických FIR/IIR filtrů, v časové oblasti.
 
 \subsubsection{Mediánový filtr}
@@ -354,16 +354,20 @@ Exponenciální vyhlazovací filtr, nebo také exponenciální klouzavý průmě
 \begin{equation} \label{eq:EMA}
 \begin{gathered}
     y_{0} = x_{0}\hspace{6em} \\
-    y_{i} = \alpha·x_{i}+(1-\alpha)·y_{i-1},\qquad 0<\alpha<1
+    y_{t} = \alpha·x_{t}+(1-\alpha)·y_{t-1},\qquad 0<\alpha<1
 \end{gathered}
 \vspace{0.25cm}
 \end{equation}
-Z této rovnice vyplývá, že pro rostoucí hodnotu vyhlazovacího parametru se účinnost filtru snižuje a pro $\alpha$ = 1 je hodnota výstupu rovna hodnotě vstupní. Dosazením vztahu pro výpočet \textit{i}-té výstupní hodnoty do téže rovnice je obdržena geometrická řada objasňující exponenciální podstatu tohoto filtru:
+Z této rovnice vyplývá, že pro rostoucí hodnotu vyhlazovacího parametru se účinnost filtru snižuje a pro $\alpha$ = 1 je hodnota výstupu rovna hodnotě vstupní. Dosazením vztahu pro výpočet \textit{t}-té výstupní hodnoty do téže rovnice je obdržena geometrická řada (rovnice \ref{eq:EMAexp}) objasňující exponenciální podstatu tohoto filtru:
 \begin{equation} \label{eq:EMAexp}
-    y_{i} = \alpha·[(1-\alpha)·x_{i-1}+(1-\alpha)^{2}·x_{i-2}+_{\ldots}+(1-\alpha)^{i-1}·x_{1}]+(1-\alpha)^{i}·x_{0}
+ \begin{gathered}
+ y_{t} = \alpha·[(1-\alpha)·x_{t-1}+(1-\alpha)^{2}·x_{t-2}+_{\ldots}+(1-\alpha)^{t-1}·x_{1}]+(1-\alpha)^{t}·x_{0} \\
+    y_{t}=\sum_{t=0}^{N} \alpha · [(1-\alpha)^{t-1}·x_{N-t-1}]+(1-\alpha)^{t}·x_{N-t}
+\end{gathered}
 \vspace{0.25cm}
 \end{equation}
-Závislost váhy hodnoty na její vzdálenosti od současné hodnoty je graficky znázorněna na obr. č. \ref{fig:EMAexp}. Z povahy křivky je patrné, že se skutečně jedná o exponenciálu, navíc s klesající tendencí, z čehož vyplývá, že skutečně čím vzdálenější je hodnota od hodnoty aktuální, tím menší má význam pro výpočet odezvy filtru.
+\todoin[bordercolor=green!80,backgroundcolor=green!40]{Prosim o kontrolu: jsou ty indexy spravne? cucala jsem si to z prstu\\a uprimne uz sve hlave moc neverim}
+Závislost váhy hodnoty (1 -- $\alpha$) na její vzdálenosti (\textit{k}) od současné hodnoty (\textit{$x_{t}$}) je graficky znázorněna na obr. č. \ref{fig:EMAexp} pro hodnotu $\alpha$ = 0.80. Z povahy křivky je patrné, že se opravdu jedná o exponenciálu, navíc s klesající tendencí, z čehož vyplývá, že skutečně čím vzdálenější je hodnota od hodnoty aktuální, tím menší má význam pro výpočet odezvy filtru.
 
 
 Přidáním dalších vyhlazovacích parametrů lze exponenciální vyhlazování provádět vícenásobně. Dvojité vyhlazování spočívá v zařazení trend vyhlazujícího parametru $\beta$. Trojnásobné vyhlazovaní pak zohledňuje i sezónnost sledovaného děje vnesením třetího parametru $\gamma$. Tyto pokročilé metody ale nejsou předmětem této práce, ta se dále zaměřuje pouze na jednoduché exponenciální vyhlazování.
@@ -371,7 +375,7 @@ Přidáním dalších vyhlazovacích parametrů lze exponenciální vyhlazován�
 \begin{figure}[hbt!]
     \centering
     \includegraphics[width=\linewidth,height=8cm]{EMAexp1.png}
-    \caption{Křivka závislosti váhy hodnoty (1-$\alpha$) na její vzdálenosti (\textit{k}) od aktuální hodnoty (\textit{$x_i$})}
+    \caption{Křivka závislosti váhy hodnoty (1 -- $\alpha$) na její vzdálenosti (\textit{k}) od aktuální hodnoty (\textit{$x_t$})}
     \label{fig:EMAexp}
 \end{figure}
 
@@ -486,12 +490,29 @@ Při ukládání grafické podoby zpracovaných dat se, obdobně jako v předch�
 \newpage
 
 \section{Výsledky a diskuse} \label{sec:diskuze}
-V první fázi tvorby programu byla řešena otázka volby knihovny GUI, ve které bude rozhraní programu implementováno. Vzhledem ke komplexnosti úlohy byla nakonec vybrána knihovna GUI PyQt5, která oproti standardní knihovně Tk nabízí širší možnosti dalšího rozvoje programu \ldots
-\vskip 0.5in
+\subsection{Výběr knihovny a vzhled okna}
+V první fázi tvorby programu byla řešena otázka volby knihovny GUI, ve které bude rozhraní programu implementováno. Vzhledem ke komplexnosti úlohy byla nakonec vybrána knihovna GUI PyQt5, která oproti standardní knihovně Tk nabízí širší nabídku widgetů, jeví se jako lepší alternativa z hlediska dalšího rozvoje programu a v neposlední řadě poskytuje i vizuálně přívětivější výsledky.
+PyQt5 navíc nabízí možnost sestavení základní kostry rozhraní v nástroji QtDesigner. Tato možnost byla z počátku zvažována, ale vzhledem k nepřehlednosti kódu generovaného z prostředí QtDesigneru od ní bylo upuštěno a celý program byl vystavěn ručně pomocí Pythonu a jeho knihoven.
+\vskip 0.1in
+\noindent Prvním návrhem vzhledu rozhraní bylo víceoknové rozložení (viz obr. č. \ref{fig:oldwin}), kdy se po stisku tlačítka \uv{Next} data ke zpracování vykreslila v okně odděleném od okna hlavního. Toto rozložení se však ukázalo jako nešťastné pro zpracování více datových kanálů najednou, kdy množství otevřených oken přestávalo být přehledné. Došlo proto k optimalizaci designu okna vytvořením systému záložek. V této podobě okna se vybraná data ke zpracování vykreslují do záložek, ale v rámci jednoho hlavního okna. Uživatel tak může pracovat s několika datovými kanály naráz a i přes to mu zůstává dostatek prostoru na pracovní ploše. Záložky jsou navíc označeny číslem kanálu a lze mezi nimi jednoduše přepínat. Ostatní funkční prvky byly víceméně zachovány. Počet tlačítek pro export dat byl snížen na dvě s tím, že volbu datového typu lze provést přímo v dialogovém okně, které se otevře stiskem příslušného tlačítka.
 
-Testování chodu programu bylo prováděno na souboru testovacích dat\footnote{Soubor \uv{\texttt{testovaci.dat}} je spolu se zdrojovým kódem programu přiložen k této práci na CD.} o rozměrech 15853 řádků a 207 sloupců (odpovídá velikosti 34.4 MB)
+\begin{figure}[hbt!]
+ \centering
+ \includegraphics[width=0.85\linewidth]{oldwin.png}
+ \caption{Víceoknová podoba uživatelského rozhaní}
+ \label{fig:oldwin}
+\end{figure}
 
-\vskip 0.5in
+\subsection{Filtrace}
+\begin{figure}[hbt!]
+ \centering
+ \includegraphics[width=\linewidth,height=0.65\linewidth]{median_diskuse.png}
+ \caption{Porovnání odezvy implementovaného a vestavěného mediánového filtru: kanál \textbf{79}, okno \textbf{151} hodnot}
+ \label{fig:median_srovnani}
+\end{figure}
+
+\vskip 0.2in
+
 \begin{figure}[hbt!]
  \centering
  \includegraphics[width=\linewidth,height=0.65\linewidth]{exp_figures.png}
@@ -499,14 +520,18 @@ Testování chodu programu bylo prováděno na souboru testovacích dat\footnote
  \label{fig:exp_filtry}
 \end{figure}
 
+\vskip 0.5in
+Testování chodu programu bylo prováděno na souboru testovacích dat\footnote{Soubor \uv{\texttt{testovaci.dat}} je spolu se zdrojovým kódem programu přiložen k této práci na CD.} o rozměrech 15853 řádků a 207 sloupců (odpovídá velikosti 34.4 MB)
 
+
+\clearpage
 \newpage
 \section{Závěr}
-
+lhsdfkhdhskhdgykhfsk
 
 % seznam literatury
+\clearpage
 \newpage
-
 \bibliography{citace}
 %%
 
