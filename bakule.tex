@@ -42,8 +42,6 @@
   showtabs=false,                  
   tabsize=2
 }
-
-%"mystyle" code listing set
 \lstset{style=mystyle}
 
 %%
@@ -74,6 +72,8 @@
 \newcommand{\cR}{\color{red}}
 \newcommand{\misRef}{{\cR[REF]\,}}
 \newcommand{\cB}{\color{blue}}
+\usepackage{paralist}
+\usepackage{ulem}
 %%
 
 % matika
@@ -320,7 +320,7 @@ Z obr. č. \ref{fig:theo_savitzkygol} je patrné, že při stejné délce okna p
 
 \subsubsection{Mediánový filtr}
 \label{sec:filtr3}
-Dalším z použitých filtrů je filtr mediánový. Principem mediánového filtru je nahradit \textit{i}-tou hodnotu signálu mediánem, tedy prostřední hodnotou, posouvajícího se okna definované délky. Vzhledem k zohledňování předcházejících hodnot při výpočtu odezvy se mediánový filtr řadí mezi nelineární filtry. Pro získání mediánu je potřeba hodnoty v okně nejprve seřadit podle velikosti vzestupně a následně určit prostřední hodnotu podsouboru. Okno může mít libovolný počet hodnot. V případě lichého počtu hodnot v okně je mediánem reálná prostřední hodnota, v případě sudého počtu hodnot je za medián považován aritmetický průměr dvou sousedících prostředních hodnot. Při použití mediánového filtru v některých programovacích jazycích však platí restrikce pouze na okna o lichém počtu hodnot (např. Python - vestavěná funkce knihovny scipy \texttt{medfilt()}). Přes poměrně snadný princip mediánového filtru (viz obr. č. \ref{fig:theo_median}) je při jeho implementaci potřeba ošetřit jeden problém, a to sice výpočet odezvy pro krajní hodnoty datového souboru. K řešení tohoto problému je možné přistoupit dvěma způsoby. V obou případech je nutné chybějící pole pro výpočet mediánu nahradit, a to buď sousedními hodnotami \textit{i}-tého bodu, nebo doplněním chybějících hodnot v okně nulami. Na obrázcích \ref{fig:median_boundary} a \ref{fig:median_zero} jsou uvedeny oba příklady výpočtu odezvy MF na hranici datového souboru pro okno o velikosti 5. Výhody, resp. nevýhody obou přístupů budou rozebrány v diskuzi (sekce \ref{sec:diskuze}) této práce.\vspace{6cm}
+Dalším z použitých filtrů je filtr mediánový. Principem mediánového filtru je nahradit \textit{i}-tou hodnotu signálu mediánem, tedy prostřední hodnotou, posouvajícího se okna definované délky. Vzhledem k zohledňování předcházejících hodnot při výpočtu odezvy se mediánový filtr řadí mezi nelineární filtry. Pro získání mediánu je potřeba hodnoty v okně nejprve seřadit podle velikosti vzestupně a následně určit prostřední hodnotu podsouboru. Okno může mít libovolný počet hodnot. V případě lichého počtu hodnot v okně je mediánem reálná prostřední hodnota, v případě sudého počtu hodnot je za medián považován aritmetický průměr dvou sousedících prostředních hodnot. Při použití mediánového filtru v některých programovacích jazycích však platí restrikce pouze na okna o lichém počtu hodnot (např. Python - vestavěná funkce knihovny scipy \texttt{medfilt()}). Přes poměrně snadný princip mediánového filtru (viz obr. č. \ref{fig:theo_median}) je při jeho implementaci potřeba ošetřit jeden problém, a to sice výpočet odezvy pro krajní hodnoty datového souboru. K řešení tohoto problému je možné přistoupit dvěma způsoby. V obou případech je nutné chybějící pole pro výpočet mediánu nahradit, a to buď sousedními hodnotami \textit{i}-tého bodu, nebo doplněním chybějících hodnot v okně nulami. Na obrázcích \ref{fig:median_boundary} a \ref{fig:median_zero} jsou uvedeny oba příklady výpočtu odezvy MF na hranici datového souboru pro okno o velikosti 5. Výhody, resp. nevýhody obou přístupů budou rozebrány v diskuzi (sekce \ref{implementace}) této práce.\vspace{6cm}
 
 \begin{figure}[ht!]
 \centering
@@ -367,7 +367,7 @@ Z této rovnice vyplývá, že pro rostoucí hodnotu vyhlazovacího parametru se
 \vspace{0.25cm}
 \end{equation}
 \todoin[bordercolor=green!80,backgroundcolor=green!40]{Prosim o kontrolu: jsou ty indexy spravne? cucala jsem si to z prstu\\a uprimne uz sve hlave moc neverim}
-Závislost váhy hodnoty (1 -- $\alpha$) na její vzdálenosti (\textit{k}) od současné hodnoty (\textit{$x_{t}$}) je graficky znázorněna na obr. č. \ref{fig:EMAexp} pro hodnotu $\alpha$ = 0.80. Z povahy křivky je patrné, že se opravdu jedná o exponenciálu, navíc s klesající tendencí, z čehož vyplývá, že skutečně čím vzdálenější je hodnota od hodnoty aktuální, tím menší má význam pro výpočet odezvy filtru.
+Závislost váhy hodnoty (1 -- $\alpha$) na její vzdálenosti (\textit{k}) od současné hodnoty (\textit{$x_{t}$}) je pro hodnotu $\alpha$ = 0.80 graficky znázorněna na obr. č. \ref{fig:EMAexp}. Z povahy křivky je patrné, že se opravdu jedná o exponenciálu, navíc s klesající tendencí, z čehož vyplývá, že skutečně čím vzdálenější je hodnota od hodnoty aktuální, tím menší má význam pro výpočet odezvy filtru.
 
 
 Přidáním dalších vyhlazovacích parametrů lze exponenciální vyhlazování provádět vícenásobně. Dvojité vyhlazování spočívá v zařazení trend vyhlazujícího parametru $\beta$. Trojnásobné vyhlazovaní pak zohledňuje i sezónnost sledovaného děje vnesením třetího parametru $\gamma$. Tyto pokročilé metody ale nejsou předmětem této práce, ta se dále zaměřuje pouze na jednoduché exponenciální vyhlazování.
@@ -475,7 +475,10 @@ for idx, a in np.ndenumerate(r):
     else:
         aux[idx[0]] = alpha * a + (1 - alpha) * aux[idx[0] - 1]
 \end{lstlisting}
+
 \vskip 0.2in
+Při vizualizaci výstupů filtrů byly pro větší přehlednost voleny, pokud možno, kontrastní barvy. Filtrovaný signál se zároveň vykresluje v překryvu s původním signálem, aby bylo možné je vzájemně porovnat.
+
 
 \subsubsection{Export dat} \label{sec:export}
 Poslední fází zpracování krystalografických dat je uložení těchto dat do souboru přístupného i po opuštění programu. Program nabízí dvě možnosti exportu zpracovaných dat, a to buď ve formě prostého textu nebo ve formě grafiky.
@@ -493,25 +496,25 @@ Při ukládání grafické podoby zpracovaných dat se, obdobně jako v předch�
 \subsection{Výběr knihovny a vzhled okna}
 V první fázi tvorby programu byla řešena otázka volby knihovny GUI, ve které bude rozhraní programu implementováno. Vzhledem ke komplexnosti úlohy byla nakonec vybrána knihovna GUI PyQt5, která oproti standardní knihovně Tk nabízí širší nabídku widgetů, jeví se jako lepší alternativa z hlediska dalšího rozvoje programu a v neposlední řadě poskytuje i vizuálně přívětivější výsledky.
 PyQt5 navíc nabízí možnost sestavení základní kostry rozhraní v nástroji QtDesigner. Tato možnost byla z počátku zvažována, ale vzhledem k nepřehlednosti kódu generovaného z prostředí QtDesigneru od ní bylo upuštěno a celý program byl vystavěn ručně pomocí Pythonu a jeho knihoven.
-\vskip 0.1in
-\noindent Prvním návrhem vzhledu rozhraní bylo víceoknové rozložení (viz obr. č. \ref{fig:oldwin}), kdy se po stisku tlačítka \uv{Next} data ke zpracování vykreslila v okně odděleném od okna hlavního. Toto rozložení se však ukázalo jako nešťastné pro zpracování více datových kanálů najednou, kdy množství otevřených oken přestávalo být přehledné. Došlo proto k optimalizaci designu okna vytvořením systému záložek. V této podobě okna se vybraná data ke zpracování vykreslují do záložek, ale v rámci jednoho hlavního okna. Uživatel tak může pracovat s několika datovými kanály naráz a i přes to mu zůstává dostatek prostoru na pracovní ploše. Záložky jsou navíc označeny číslem kanálu a lze mezi nimi jednoduše přepínat. Ostatní funkční prvky byly víceméně zachovány. Počet tlačítek pro export dat byl snížen na dvě s tím, že volbu datového typu lze provést přímo v dialogovém okně, které se otevře stiskem příslušného tlačítka.
-
-\begin{figure}[hbt!]
+\begin{figure}[h!]
  \centering
  \includegraphics[width=0.85\linewidth]{oldwin.png}
- \caption{Víceoknová podoba uživatelského rozhaní}
+ \caption{Víceoknová podoba uživatelského rozhraní}
  \label{fig:oldwin}
 \end{figure}
+\vskip 0.1 in
+\noindent Prvním návrhem vzhledu rozhraní bylo víceoknové rozložení (viz obr. č. \ref{fig:oldwin}), kdy se po stisku tlačítka \uv{Next} data ke zpracování vykreslila v okně odděleném od okna hlavního. Toto rozložení se však ukázalo jako nešťastné pro zpracování více datových kanálů najednou, kdy množství otevřených oken přestávalo být přehledné. Došlo proto k optimalizaci designu okna vytvořením systému záložek. V této podobě okna se vybraná data ke zpracování vykreslují do záložek, ale v rámci jednoho hlavního okna. Uživatel tak může pracovat s několika datovými kanály naráz a i přes to mu zůstává dostatek prostoru na pracovní ploše. Záložky jsou navíc označeny číslem kanálu a lze mezi nimi jednoduše přepínat. Ostatní funkční prvky byly víceméně zachovány. Počet tlačítek pro export dat byl snížen na dvě s tím, že volbu datového typu nově vzniklého souboru lze provést přímo v dialogovém okně, které se otevře stiskem příslušného tlačítka.
 
 \subsection{Filtrace}
-\begin{figure}[hbt!]
- \centering
- \includegraphics[width=\linewidth,height=0.65\linewidth]{median_diskuse.png}
- \caption{Porovnání odezvy implementovaného a vestavěného mediánového filtru: kanál \textbf{79}, okno \textbf{151} hodnot}
- \label{fig:median_srovnani}
-\end{figure}
-
-\vskip 0.2in
+\subsubsection{Volba filtrů}
+Pro účel zpracování signálu v rámci programu byly vybrány čtyři různé low-pass filtry. Vzhledem k nespecifickým požadavkům na výslednou podobu zpracovaných dat, byly klíčem k výběru konkrétních filtrů jednak 
+\begin{inparaenum}[($i$)]
+\item požadavek na odstranění vysokofrekvenčního šumu
+a také
+\item možnost snadné implementace\end{inparaenum}. Vybrané filtry jsou běžně používané ke zpracování experimentálních dat v různých aplikacích. Statistické vyhodnocení kvality filtrace jednotlivými filtry a jejich porovnání je námětem k budoucímu rozšíření práce.
+\subsubsection{Implementace} \label{implementace}
+V rámci programu byly implementovány dva z celkových čtyř použitých číslicových filtrů, mediánový filtr a exponenciální vyhlazovací filtr. Tyto dva filtry byly vybrány k implementaci z důvodu jednoduchého a jednoznačného matematického popisu. Exponenciální vyhlazovací filtr navíc není součástí knihovny \textbf{scipy}, jeho implementace tak byla jediným možným řešením.  U zbývajících dvou filtrů, zero-phase a Savitzky-Golay filtru, z dokumentace knihovny \textbf{scipy} jasně nevyplývaly parametry vestavěných funkcí pro tyto filtry tak, aby bylo možné implementované filtry jim \dashuline{připodobnit} a následně s nimi porovnat. Proto byly v rámci programu použity přímo vestavěné funkce knihovny \textbf{scipy}, \url{signal.filtfilt()}, resp. \url{signal.savgol_filter()}.
+Ukázka výstupů filtrace kanálu $\theta$ = 79 prováděné v rámci programu je znázorněna na obr. č. \ref{fig:exp_filtry}.
 
 \begin{figure}[hbt!]
  \centering
@@ -520,8 +523,16 @@ PyQt5 navíc nabízí možnost sestavení základní kostry rozhraní v nástroj
  \label{fig:exp_filtry}
 \end{figure}
 
-\vskip 0.5in
-Testování chodu programu bylo prováděno na souboru testovacích dat\footnote{Soubor \uv{\texttt{testovaci.dat}} je spolu se zdrojovým kódem programu přiložen k této práci na CD.} o rozměrech 15853 řádků a 207 sloupců (odpovídá velikosti 34.4 MB)
+\noindent Při implementaci mediánového filtru byl řešen problém výpočtu odezvy filtru v krajních hodnotách datového souboru. Podle dostupných zdrojů jsou přípustné dva přístupy, a to buď nahrazení chybějících hodnot okna hodnotami sousedícími s \textit{i}-tou hodnotou, nebo nahrazení těchto hodnot nulami. Vestavěná funkce knihovny \textbf{scipy} volí nahrazení chybějících hodnot právě nulami. V rámci implementace byla správnost návrhu filtru testována nejprve na malém souboru pseudonáhodného signálu, na němž se projevila nepřesnost tohoto přístupu právě v krajních bodech souboru. Ukázalo se, že v této oblasti filtr nekopíruje zcela věrohodně chování signálu a má tendenci se limitně přibližovat nule. Tento jev se navíc z pochopitelných důvodů s rostoucí velikostí okna, tj. při agresivnější filtraci, akcentuje.
+\vskip 0.08in
+\noindent Z toho důvodu byla implementována i varianta filtru nahrazující chybějící hodnoty okna hodnotami sousedícími s \textit{i}-tou hodnotou. Tato varianta dle vizuálního posouzení poskytuje v krajích datového souboru uspokojivější výsledky. Z toho důvodu byla v rámci programu použita právě tato varianta. Srovnání výstupů obou přístupů je ukázáno na výřezu posledních sta hodnot posloupnosti testovacích dat (pravý okraj) filtrovaných jednotlivými variantami mediánového filtru (viz obr. č. \ref{fig:median_srovnani}). \par
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=\linewidth,height=0.65\linewidth]{median_diskuse.png}
+ \caption{Porovnání odezvy implementovaného a vestavěného mediánového filtru: kanál \textbf{79}, velikost okna \textbf{151} hodnot}
+ \label{fig:median_srovnani}
+\end{figure}
+Testování chodu programu bylo prováděno na souboru testovacích dat\footnote{Soubor \uv{\texttt{testovaci.dat}} je spolu se zdrojovým kódem programu přiložen k této práci na CD.} o rozměrech 15853 řádků a 207 sloupců (odpovídá velikosti 34.4 MB). Data byla extrahována ze souboru poskytnutého výzkumnou skupinou doc. Pavla Nováka z Ústavu kovových materiálů a korozního inženýrství VŠCHT Praha \dashuline{a upravena do požadovaných rozměrů}. 
 
 
 \clearpage
