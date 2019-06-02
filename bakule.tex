@@ -63,6 +63,16 @@
 % okraje (v případě potřeby):\usepackage[showframe]{geometry}
 %%
 
+% záhlaví
+\usepackage{fancyhdr}
+\fancyhf{}
+\headheight=12.3pt
+\lhead{\footnotesize{Kristýna Žemlová}}
+\chead{\footnotesize{Program pro zpracování krystalografických dat}}
+\rhead{\footnotesize{2019}}
+\cfoot{\thepage}
+%%
+
 % poznámky
 \usepackage[colorinlistoftodos]{todonotes}
 \newcommand\todoin[2][]{\todo[inline, caption={2do},#1]{\begin{minipage}{\textwidth-4pt}#2\end{minipage}}}
@@ -82,10 +92,10 @@
 \usepackage{pdfpages} 
 
 \begin{document}
-\includepdf{vstupni_listy.pdf}
-\includepdf{zadani_1.pdf}
-\includepdf{zadani_2.pdf}
-
+\includepdf[pages={1,2,3}]{vstupni_listy.pdf}
+%\includepdf{zadani_1.pdf}
+%\includepdf{zadani_2.pdf}
+\setcounter{page}{5}
 % souhrn
 % (CZ)
 \begin{abstract}
@@ -119,6 +129,7 @@ During the reactive sintering, powdery metals are sintered at high temperatures 
 \newpage
 
 % úvod
+\pagestyle{fancy}
 \section{Úvod}
 V oblasti výzkumu kovových materiálů jsou kladeny stále větší nároky na jejich vlastnosti. V této souvislosti je snaha získávat slitiny s vylepšenými vlastnostmi, které by vynikaly např. nízkou hustotou, vysokou tepelnou stabilitou či výbornou odolností vůči korozi. \cite{NOVAK2009123} Jednou z hojně využívaných metod získávání slitin s vylepšenými vlastnostmi je metoda práškového slinování kovů, nebo-li reaktivní sintrace, poskytující nejrůznější intermetalické sloučeniny. \cite{novak2012pvriprava} Při sintraci však vznikají jak užitečné slitiny požadovaných vlastností, tak i méně kvalitní produkty. Pro maximální výtěžnost je proto nutné sledovat mechanismus vzniku jednotlivých sloučenin, a to např. metodou \textit{in situ} rentgenové difrakce (XRD), která umožňuje detailně pozorovat vývoj krystalické struktury reakční směsi v reálném čase. \cite{NOVAKxrd} \par
 
@@ -138,12 +149,12 @@ V 80. letech minulého století pracovali vývojáři institutu Centrum voor Wis
 \subsection{Specifika programování v Pythonu} \label{sec:specifika}
 
 Python je multimodální skriptovací jazyk umožňující programování v rámci jak objektově orientovaného, tak procedurálního paradigmatu. \cite{Python3Summerfield:1}
-Jak vyplývá ze statistik dvou nezávislých ukazatelů popularity programovacích jazyků, TIOBE\footnote{TIOBE Programming Community index je ukazatel popularity programovacích jazyků na základě počtu aktivních uživatelů, zdrojem informací jsou výsledky vyhledávání klíčových slov souvisejících s daným jazykem na nejrůznějších serverech, jako Google, Yahoo! nebo Wikipedia. \cite{tiobe}} a PYPL\footnote{PYPL PopularitY of Programming Language Index je ukazatelem popularity programovacích jazyků vycházející z dat služby Google Trends, která shromažďuje a vyhodnocuje údaje o vyhledávání od společnosti Google. \cite{pypl}}, Python se řadí mezi dlouhodobě nejoblíbenější programovací jazyky (viz obr. č. \ref{fig:tiobe} \cite{tiobe}).
+Jak vyplývá ze statistik dvou nezávislých ukazatelů popularity programovacích jazyků, TIOBE\footnote{TIOBE Programming Community index je ukazatel popularity programovacích jazyků na základě počtu aktivních uživatelů, zdrojem informací jsou výsledky vyhledávání klíčových slov souvisejících s daným jazykem na nejrůznějších serverech, jako Google, Yahoo! nebo Wikipedia. \cite{tiobe}} a PYPL\footnote{PYPL PopularitY of Programming Language Index je ukazatelem popularity programovacích jazyků vycházející z dat služby Google Trends, která shromažďuje a vyhodnocuje údaje o vyhledávání od společnosti Google. \cite{pypl}}, Python se řadí mezi dlouhodobě nejoblíbenější programovací jazyky (viz obr. č. \ref{fig:tiobe}, převzato z \cite{tiobe}).
 
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=\linewidth]{tiobe.png}
-    \caption{Dlouhodobá meziroční statistika oblíbenosti programovacích jazyků podle indexu TIOBE, převzato z \cite{tiobe}}
+    \caption{Dlouhodobá meziroční statistika oblíbenosti programovacích jazyků podle indexu TIOBE}
     \label{fig:tiobe}
 \end{figure}
 
@@ -371,16 +382,15 @@ Závislost váhy hodnoty (1 -- $\alpha$) na její vzdálenosti (\textit{k}) od s
 
 
 Přidáním dalších vyhlazovacích parametrů lze exponenciální vyhlazování provádět vícenásobně. Dvojité vyhlazování spočívá v zařazení trend vyhlazujícího parametru $\beta$. Trojnásobné vyhlazovaní pak zohledňuje i sezónnost sledovaného děje vnesením třetího parametru $\gamma$. Tyto pokročilé metody ale nejsou předmětem této práce, ta se dále zaměřuje pouze na jednoduché exponenciální vyhlazování.
-
-\begin{figure}[hbt!]
+\clearpage
+\begin{figure}[h!]
     \centering
     \includegraphics[width=\linewidth,height=8cm]{EMAexp1.png}
     \caption{Křivka závislosti váhy hodnoty (1 -- $\alpha$) na její vzdálenosti (\textit{k}) od aktuální hodnoty (\textit{$x_t$})}
     \label{fig:EMAexp}
 \end{figure}
-
 %%
-\clearpage
+\newpage
 % praktická část
 \section{Tvorba uživatelského rozhraní a zpracování krystalografických dat} \label{sec:prakticka}
 Předmětem praktické části této práce byly dva hlavní úkoly, a to implementovat algoritmy pro zpracování dat získaných rentgenovou krystalografií a následně naprogramovat v jazyce Python uživatelské rozhraní umožnující snadnou práci s tímto programem. V následujícím textu bude popsán postup tvorby programu chronologicky tak, jak se předpokládá, že budou jednotlivé prvky využity uživatelem. Tedy od spuštění programu (sekce \ref{sec:mainwin}) až po export zpracovaného signálu do souborů třetích stran (sekce \ref{sec:export}). K tvorbě programu byl použit programovací jazyk Python ve verzi 3.6.6 a některé jeho knihovny, jako např. \textbf{matplotlib}, \textbf{scipy}, \textbf{PySide}, \textbf{numpy} a další. K implementaci uživatelského prostředí pak byla použita knihovna GUI PyQt5 (verze 5.11.3). \textcolor{cdorange}{Zdrojový kód aplikace je přiložen k této práci na CD}.
@@ -410,11 +420,10 @@ Pro vizualizaci dat slouží centrální widget hlavního okna, do něhož je um
 Po vykreslení dat a jejich vizuálním posouzení je možné v pravé dolní části hlavního okna provést výběr kanálu, tedy výřezu dat pro daný úhel $\theta$, který je z pohledu vyhodnocení zajímavý. Stisknutím tlačítka \uv{Next} dojde k potvrzení výběru a zároveň je vyslán příkaz k otevření nové záložky, kde je možné vzniklý jednorozměrný signál dále zpracovat (viz \ref{sec:fcntabs}). Výběr datového kanálu lze provádět opakovaně zadáním nové hodnoty $\theta$ do editovatelného pole.
 
 \subsection{Záložky a funkce} \label{sec:fcntabs}
+V dalším kroku je vybrané pásmo signálu odpovídající zadanému úhlu $\theta$ vykresleno v nové záložce s nástroji pro zpracování signálu. V každé záložce se nachází grafické okno knihovny \textbf{matplotlib} pro vizualizaci jednorozměrného signálu, dále sekce pro výběr jednoho ze čtyř číslicových filtrů zastoupených zaškrtávacími tlačítky, a v neposlední řadě dvě tlačítka pro ukládání zpracovaných dat do souborů.
 
-Piece of shit:\textcolor{cdorange}{V dalším kroku je vybrané pásmo signálu odpovídající zadanému úhlu $\theta$ vykresleno v nové záložce. Systém okna se záložkami byl zvolen pro větší přehlednost a zároveň umožní zpracování více kanálů najednou. Jednotlivé výřezy je tak možné vzájemně porovnávat jednoduchým přepínáním mezi záložkami. Záložky lze také v rámci lišty libovolně přesouvat potažením myši. Počet otevřených záložek prakticky není omezen, lze jej redukovat uzavřením dané záložky pomocí křížku. Záložku hlavního okna s dvourozměrnou grafikou zavřít nelze.}
-\vskip 0.3in
-\ldots
-\vskip 0.3in
+Systém okna se záložkami byl zvolen pro větší přehlednost při práci a zároveň umožní zpracování více kanálů najednou. Jednotlivé kanály je tak možné vzájemně porovnávat jednoduchým přepínáním mezi záložkami. Záložky lze také v rámci lišty libovolně přesouvat potažením myši. Počet otevřených záložek prakticky není omezen, lze jej redukovat uzavřením dané záložky pomocí křížku. Záložku hlavního okna s dvourozměrnou grafikou zavřít nelze.
+
 \begin{figure}[hbt!]
     \centering
     \includegraphics[width=\linewidth]{gui_tab.png}
@@ -425,7 +434,7 @@ Piece of shit:\textcolor{cdorange}{V dalším kroku je vybrané pásmo signálu 
 \subsubsection{Filtrace signálu}\label{sec:exp_filtrace}
 Zpracování signálu je v rámci programu prováděno číslicovou filtrací. Výběr požadovaného filtru se provede v sekci filtrace stiskem příslušného zaškrtávacího tlačítka označeného názvem filtru.
 
-\noindent Do programu byly zařazeny celkem čtyři různé číslicové filtry (viz obr. č. \ref{fig:exp_filtry}), z nichž dva byly realizovány pomocí vestavěných funkcí knihovny \textbf{scipy} a dva byly implementovány. Princip jejich fungování je blíže popsán v kapitolách \ref{sec:filtr1} až \ref{sec:filtr4} této práce.
+\noindent Do programu byly zařazeny celkem čtyři různé číslicové filtry (viz obr. č. \ref{fig:exp_filtry}), z nichž dva byly realizovány pomocí vestavěných funkcí knihovny \textbf{scipy} a dva byly implementovány. Principy fungování jednotlivých filtrů jsou blíže popsány v kapitolách \ref{sec:filtr1} až \ref{sec:filtr4} této práce.
 \vskip 0.1in
 \noindent Prvním z použitých filtrů je tzv. zero-phase filtr, k jehož realizaci byla využita funkce knihovny \textbf{scipy} \texttt{signal.filtfilt()}. Parametry této funkce představují koeficienty přenosové funkce FIR filtru $b$, resp. $a$ a posloupnost filtrovaného signálu. Parametry $a$ a $b$ byly optimalizovány na základě vizuálního posouzení filtrovaného signálu a v rámci programu je nelze uživatelem měnit.
 
@@ -476,9 +485,16 @@ for idx, a in np.ndenumerate(r):
         aux[idx[0]] = alpha * a + (1 - alpha) * aux[idx[0] - 1]
 \end{lstlisting}
 
-\vskip 0.2in
+\vskip 0.1in
 Při vizualizaci výstupů filtrů byly pro větší přehlednost voleny, pokud možno, kontrastní barvy. Filtrovaný signál se zároveň vykresluje v překryvu s původním signálem, aby bylo možné je vzájemně porovnat.
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=\linewidth,height=0.65\linewidth]{exp_figures.png}
+ \caption{Ukázka výstupů filtrace v rámci programu: kanál \textbf{79}}
+ \label{fig:exp_filtry}
+\end{figure}
 
+Ukázka výstupů filtrace kanálu $\theta$ = 79 prováděné v rámci programu je znázorněna na obr. č. \ref{fig:exp_filtry}.
 
 \subsubsection{Export dat} \label{sec:export}
 Poslední fází zpracování krystalografických dat je uložení těchto dat do souboru přístupného i po opuštění programu. Program nabízí dvě možnosti exportu zpracovaných dat, a to buď ve formě prostého textu nebo ve formě grafiky.
@@ -514,24 +530,19 @@ a také
 \item možnost snadné implementace\end{inparaenum}. Vybrané filtry jsou běžně používané ke zpracování experimentálních dat v různých aplikacích. Statistické vyhodnocení kvality filtrace jednotlivými filtry a jejich porovnání je námětem k budoucímu rozšíření práce.
 \subsubsection{Implementace} \label{implementace}
 V rámci programu byly implementovány dva z celkových čtyř použitých číslicových filtrů, mediánový filtr a exponenciální vyhlazovací filtr. Tyto dva filtry byly vybrány k implementaci z důvodu jednoduchého a jednoznačného matematického popisu. Exponenciální vyhlazovací filtr navíc není součástí knihovny \textbf{scipy}, jeho implementace tak byla jediným možným řešením.  U zbývajících dvou filtrů, zero-phase a Savitzky-Golay filtru, z dokumentace knihovny \textbf{scipy} jasně nevyplývaly parametry vestavěných funkcí pro tyto filtry tak, aby bylo možné implementované filtry jim \dashuline{připodobnit} a následně s nimi porovnat. Proto byly v rámci programu použity přímo vestavěné funkce knihovny \textbf{scipy}, \url{signal.filtfilt()}, resp. \url{signal.savgol_filter()}.
-Ukázka výstupů filtrace kanálu $\theta$ = 79 prováděné v rámci programu je znázorněna na obr. č. \ref{fig:exp_filtry}.
-
-\begin{figure}[hbt!]
- \centering
- \includegraphics[width=\linewidth,height=0.65\linewidth]{exp_figures.png}
- \caption{Ukázka výstupů filtrace v rámci programu: kanál \textbf{79}}
- \label{fig:exp_filtry}
-\end{figure}
+\vskip 0.1in
 
 \noindent Při implementaci mediánového filtru byl řešen problém výpočtu odezvy filtru v krajních hodnotách datového souboru. Podle dostupných zdrojů jsou přípustné dva přístupy, a to buď nahrazení chybějících hodnot okna hodnotami sousedícími s \textit{i}-tou hodnotou, nebo nahrazení těchto hodnot nulami. Vestavěná funkce knihovny \textbf{scipy} volí nahrazení chybějících hodnot právě nulami. V rámci implementace byla správnost návrhu filtru testována nejprve na malém souboru pseudonáhodného signálu, na němž se projevila nepřesnost tohoto přístupu právě v krajních bodech souboru. Ukázalo se, že v této oblasti filtr nekopíruje zcela věrohodně chování signálu a má tendenci se limitně přibližovat nule. Tento jev se navíc z pochopitelných důvodů s rostoucí velikostí okna, tj. při agresivnější filtraci, akcentuje.
-\vskip 0.08in
-\noindent Z toho důvodu byla implementována i varianta filtru nahrazující chybějící hodnoty okna hodnotami sousedícími s \textit{i}-tou hodnotou. Tato varianta dle vizuálního posouzení poskytuje v krajích datového souboru uspokojivější výsledky. Z toho důvodu byla v rámci programu použita právě tato varianta. Srovnání výstupů obou přístupů je ukázáno na výřezu posledních sta hodnot posloupnosti testovacích dat (pravý okraj) filtrovaných jednotlivými variantami mediánového filtru (viz obr. č. \ref{fig:median_srovnani}). \par
+
 \begin{figure}[h!]
  \centering
  \includegraphics[width=\linewidth,height=0.65\linewidth]{median_diskuse.png}
  \caption{Porovnání odezvy implementovaného a vestavěného mediánového filtru: kanál \textbf{79}, velikost okna \textbf{151} hodnot}
  \label{fig:median_srovnani}
 \end{figure}
+
+\noindent Z toho důvodu byla implementována i varianta filtru nahrazující chybějící hodnoty okna hodnotami sousedícími s \textit{i}-tou hodnotou. Tato varianta dle vizuálního posouzení poskytuje v krajích datového souboru uspokojivější výsledky. Z toho důvodu byla v rámci programu použita právě tato varianta. Srovnání výstupů obou přístupů je ukázáno na výřezu posledních sta hodnot posloupnosti testovacích dat (pravý okraj) filtrovaných jednotlivými variantami mediánového filtru (viz obr. č. \ref{fig:median_srovnani}). \par
+
 Testování chodu programu bylo prováděno na souboru testovacích dat\footnote{Soubor \uv{\texttt{testovaci.dat}} je spolu se zdrojovým kódem programu přiložen k této práci na CD.} o rozměrech 15853 řádků a 207 sloupců (odpovídá velikosti 34.4 MB). Data byla extrahována ze souboru poskytnutého výzkumnou skupinou doc. Pavla Nováka z Ústavu kovových materiálů a korozního inženýrství VŠCHT Praha \dashuline{a upravena do požadovaných rozměrů}. 
 
 
